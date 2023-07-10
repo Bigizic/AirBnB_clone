@@ -27,12 +27,8 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key != '__class__':
                     if (key == 'created_at' or key == 'updated_at'):
-<<<<<<< HEAD
-                        setattr(self, key, datetime.strptime(value))
-=======
                         setattr(self, key, datetime.strptime(value,
                             '%Y-%m-%dT%H:%M:%S.%f'))
->>>>>>> c1879b02148979bbf30389bf1d23c5ac6172b1a7
                     else:
                         setattr(self, key, value)
         else:
