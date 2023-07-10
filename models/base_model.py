@@ -15,6 +15,7 @@ Return:
 
 import uuid
 from datetime import datetime
+from models import storage
 
 
 class BaseModel:
@@ -36,6 +37,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
+            storage.new(self)
 
     def __str__(self):
         """Returns dict format, class name and unique id
@@ -48,6 +50,7 @@ class BaseModel:
         """Update updated_at public instance attribute
         """
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """returns self.__dict__, sets object class to class name,
