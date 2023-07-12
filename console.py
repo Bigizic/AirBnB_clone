@@ -143,7 +143,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return False
 
-        if "{}.()".format(args[0], args[1]) not in instances.keys():
+        if "{}.{}".format(args[0], args[1]) not in instances.keys():
             print("** no instance found **")
             return False
 
@@ -157,26 +157,13 @@ class HBNBCommand(cmd.Cmd):
             except NameError:
                 print("** value missing **")
                 return False
+        attr_name = args[2]
+        attr_value = args[3]
 
         if len(args) == 4:
             ins = instances["{}.{}".format(args[0], args[1])]
-            if args[2] in ins.__class__.dict__.keys():
-                my_type = type(obj.__class__.dict__[args[2]])
-                ins.__dict__[args[2]] = my_type(args[3])
-            else:
-                ins.__dict__[args[2]] = args[3]
-        elif type(eval(args[2])) == dict:
-            ins = instances["{}.{}".format(args[0], args[1])]
-            for keys, values in eval(args[2]).items():
-                if (keys in ins.__class__.__dict__.keys() and
-                        type(ins.__class__.__dict__[keys]) in {
-                            int, float, str}):
-                    my_type = type(ins.__class__.__dict__[keys])
-                    ins.__dict__[keys] = my_type(value)
-                else:
-                    ins.__dict__[keys] = value
-        storage.save()
-
+            ins[attr_name] = attr_value
+            storage.save()
 
 
 if __name__ == '__main__':
