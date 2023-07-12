@@ -146,8 +146,21 @@ class HBNBCommand(cmd.Cmd):
             else:
                 att_name = args[2]
                 att_value = args[3]
-                if att_name not in ["id", "created_at", "updated_at"]:
-                    setattr(self, att_name, att_value)
+                instances = storage.all()
+                found_instance = None
+
+                for ins in instances.values():
+                    if (ins.__class__.__name__ == args[0] and
+                            ins['id'] == input_id):
+                                found_instance = ins
+                                break
+
+                if found_instance:
+                    if att_name not in ["id", "created_at", "updated_at"]:
+                        setattr(found_instance, att_name, att_value)
+                        storage.save()
+                else:
+                    print("** no instance found !!**")
 
 
 
