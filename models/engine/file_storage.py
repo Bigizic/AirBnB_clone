@@ -13,6 +13,9 @@ Raises:
     Void
 """
 import json
+import os
+from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -39,13 +42,9 @@ class FileStorage:
             function it sets the data[key] to the callable function,
             otherwise it sets the data[key] to the obj
         """
-        data = {}
-        for key, obj in self.__objects.items():
-            if hasattr(obj, 'to_dict') and callable(getattr(obj, 'to_dict')):
-                data[key] = obj.to_dict()
-            else:
-                data[key] = obj
         with open(self.__file_path, "w") as open_file:
+            data = {key: obj.to_dict() for key, obj in
+                    self.__objects.items()}
             json.dump(data, open_file)
 
     def reload(self):
@@ -53,6 +52,9 @@ class FileStorage:
         """
         try:
             with open(self.__file_path, "r") as open_file:
-                self.__objects = json.load(open_file)
+                data = json.load(open_file)
+                for key, val in data.items():
+                    val = eval(val["__class__"])(**val)
+                    self.__objects[key] = val
         except Exception:
             pass
