@@ -40,6 +40,7 @@ class HBNBCommand(cmd.Cmd):
                 self.created_model = new_instance
                 self.created_id = new_instance.id
                 storage.save()
+                storage.reload()
                 print(self.created_id)
             else:
                 print("** class doesn't exist **")
@@ -55,23 +56,24 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print("** class name missing **")
 
-        elif args[0] not in ["BaseModel"]:
+        elif args[0] not in self.models:
             print("** class doesn't exist **")
 
         elif len(args) == 1:
             print("** instance id missing **")
 
         else:
-            instance_id = args[1]
+            input_id = args[1]
             instances = storage.all()
 
             found_instance = None
-            for instance in instances.values():
-                if instance_id == instance.id:
-                    found_instance = instance
+            for instance_dict in instances.values():
+                instance = instance_dict
+                if input_id == instance['id']:
+                    found_instance = instance_dict
                     break
             if found_instance:
-                print(found_instance)
+                print(BaseModel(**found_instance))
             else:
                 print("** no instance found **")
 
