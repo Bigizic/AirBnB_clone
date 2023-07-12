@@ -129,38 +129,53 @@ class HBNBCommand(cmd.Cmd):
             Usage: <class name> <id> <attribute name> <attribute value>
         """
         args = arg.split()
+        instances = storage.all()
+
         if len(args) == 0:
             print("** class name missing **")
-        elif args[0] not in self.models:
+            return False
+
+        if args[0] not in self.models:
             print("** class doesn't exist **")
-        elif len(args) == 1:
+            return False
+
+        if len(args) == 1:
             print("** instance id missing **")
-        elif len(args) == 3:
-            print("** value missing **")
-        else:
-            input_id = args[1]
-            if input_id != self.created_id and input_id[0].isdigit():
-                print("** no instance found **")
-            if not input_id[0].isdigit() and len(args) < 4:
-                print("** attribute name missing **")
+            return False
+
+        if "{}.()".format(args[0], args[1]) not in instances.keys():
+            print("** no instance found **")
+            return False
+
+        if len(args) == 2:
+            print("** attribute name missing **")
+            return False
+
+        if len(args) == 3:
+            try:
+                type(eval(args[2])) != dict
+            except NameError:
+                print("** value missing **")
+                return False
+
+        if len(args) == 4:
+            ins = instances["{}.{}".format(args[0], args[1])]
+            if args[2] in ins.__class__.dict__.keys():
+                my_type = type(obj.__class__.dict__[args[2]])
+                ins.__dict__[args[2]] = my_type(args[3])
             else:
-                att_name = args[2]
-                att_value = args[3]
-                instances = storage.all()
-                found_instance = None
-
-                for ins in instances.values():
-                    if (ins.__class__.__name__ == args[0] and
-                            ins['id'] == input_id):
-                                found_instance = ins
-                                break
-
-                if found_instance:
-                    if att_name not in ["id", "created_at", "updated_at"]:
-                        setattr(found_instance, att_name, att_value)
-                        storage.save()
+                ins.__dict__[args[2]] = args[3]
+        elif type(eval(args[2])) == dict:
+            ins = instances["{}.{}".format(args[0], args[1])]
+            for keys, values in eval(args[2]).items():
+                if (keys in ins.__class__.__dict__.keys() and
+                        type(ins.__class__.__dict__[keys]) in {
+                            int, float, str}):
+                    my_type = type(ins.__class__.__dict__[keys])
+                    ins.__dict__[keys] = my_type(value)
                 else:
-                    print("** no instance found !!**")
+                    ins.__dict__[keys] = value
+        storage.save()
 
 
 
