@@ -6,6 +6,7 @@ the command interpreter"""
 import cmd
 from models.base_model import BaseModel
 from models import storage
+import json
 
 
 class HBNBCommand(cmd.Cmd):
@@ -93,10 +94,17 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
 
         else:
-            instance_id = args[1]
-            if instance_id == self.created_id:
-                self.created_id = None
-                del self.created_model
+            input_id = args[1]
+            instances = storage.all()
+
+            found_instance = None
+            for key, instance_dict in instances.items():
+                if input_id == instance_dict['id']:
+                    found_instance = key
+                    break
+
+            if found_instance:
+                del instances[found_instance]
                 storage.save()
             else:
                 print("** no instance found **")
@@ -106,9 +114,11 @@ class HBNBCommand(cmd.Cmd):
             or not on the class name example: all BaseModel or all
         """
         instances = storage.all()
+        output = []
         if arg in self.models or len(arg) == 0:
             for instance in instances.values():
-                print(instance)
+                output.append(str(BaseModel(**instance)))
+            print(json.dumps(output))
         else:
             print("** class doesn't exist **")
 
