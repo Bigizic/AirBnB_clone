@@ -5,6 +5,7 @@ the command interpreter"""
 
 import cmd
 from models.base_model import BaseModel
+from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -14,8 +15,9 @@ class HBNBCommand(cmd.Cmd):
     """
     prompt = "(hbnb) "
 
-    created_model = BaseModel()
-    created_id = created_model.id
+    created_model = None
+    created_id = None
+    models = ["BaseModel"]
 
     def do_quit(self, arg):
         """Quit is command to exit the program"""
@@ -33,8 +35,11 @@ class HBNBCommand(cmd.Cmd):
         """Creates a new instance of BaseModel
         """
         if arg:
-            if arg in ["BaseModel"]:
-                self.created_model.save()
+            if arg in self.models:
+                new_instance = BaseModel()
+                self.created_model = new_instance
+                self.created_id = new_instance.id
+                storage.save()
                 print(self.created_id)
             else:
                 print("** class doesn't exist **")
@@ -58,8 +63,15 @@ class HBNBCommand(cmd.Cmd):
 
         else:
             instance_id = args[1]
-            if instance_id == self.created_id:
-                print(self.created_model)
+            instances = storage.all()
+
+            found_instance = None
+            for instance in instances.values():
+                if instance_id == instance.id:
+                    found_instance = instance
+                    break
+            if found_instance:
+                print(found_instance)
             else:
                 print("** no instance found **")
 
@@ -72,7 +84,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print("** class name missing **")
 
-        elif args[0] not in ["BaseModel"]:
+        elif args[0] not in self.models:
             print("** class doesn't exist **")
 
         elif len(args) == 1:
@@ -82,6 +94,8 @@ class HBNBCommand(cmd.Cmd):
             instance_id = args[1]
             if instance_id == self.created_id:
                 self.created_id = None
+                del self.created_model
+                storage.save()
             else:
                 print("** no instance found **")
 
@@ -89,10 +103,12 @@ class HBNBCommand(cmd.Cmd):
         """Prints all string representation of all instances based
             or not on the class name example: all BaseModel or all
         """
-        if arg not in ["BaseModel"]:
+        instances = storage.all()
+        if arg in self.models or len(arg) == 0:
+            for instance in instances.values():
+                print(instance)
+        else:
             print("** class doesn't exist **")
-        elif arg in ["BaseModel"] or len(arg) == 0:
-            print(self.created_model)
 
     def do_update(self, arg):
         """Updates an instance based on the class name and id by
@@ -103,7 +119,7 @@ class HBNBCommand(cmd.Cmd):
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
-        elif args[0] not in ["BaseModel"]:
+        elif args[0] not in self.models:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
