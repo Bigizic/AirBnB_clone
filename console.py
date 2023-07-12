@@ -143,13 +143,23 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return False
 
-        if "{}.{}".format(args[0], args[1]) not in instances.keys():
-            print("** no instance found **")
-            return False
-
         if len(args) == 2:
-            print("** attribute name missing **")
-            return False
+            found_id = False
+            for key, instance_dict in instances.items():
+                if args[1] == instance_dict['id']:
+                    found_id = True
+            try:
+                for elements in args[1]:
+                    if type(eval(elements)) is int and found_id != True:
+                        print("** no instance found **")
+                        return False
+            except Exception:
+                if isinstance(args[1], str) and found_id != True:
+                    print("** attribute name missing **")
+                    return False
+            if found_id == True:
+                print("** attribute name missing **")
+                return False
 
         if len(args) == 3:
             try:
