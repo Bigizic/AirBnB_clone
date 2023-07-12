@@ -158,7 +158,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** value missing **")
                 return False
         attr_name = args[2]
-        attr_value = args[3]
+        attr_value = args[3].strip("\"'")
 
         if len(args) == 4:
             ins = instances["{}.{}".format(args[0], args[1])]
