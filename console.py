@@ -145,8 +145,9 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 2:
             found_id = False
             for key, instance_dict in instances.items():
-                if args[1] == instance_dict['id']:
+                if args[1] == getattr(instance_dict, 'id', None):
                     found_id = True
+                    break
             try:
                 for elements in args[1]:
                     if type(eval(elements)) is int and found_id != True:
@@ -169,12 +170,15 @@ class HBNBCommand(cmd.Cmd):
         attr_name = args[2]
         attr_value = args[3].strip("\"'")
 
-        if len(args) == 4:
+        if len(args) >= 4:
             ins_key = "{}.{}".format(args[0], args[1])
             if ins_key in instances:
                 ins = instances[ins_key]
-                setattr(ins, attr_name, attr_value)
-                storage.save()
+                if attr_name not in ['id', 'created_at', 'updated_at']:
+                    setattr(ins, attr_name, attr_value)
+                    storage.save()
+                else:
+                    return
 
 
 if __name__ == '__main__':
