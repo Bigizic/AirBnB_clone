@@ -69,12 +69,11 @@ class HBNBCommand(cmd.Cmd):
 
             found_instance = None
             for instance_dict in instances.values():
-                instance = instance_dict
-                if input_id == instance['id']:
+                if input_id == getattr(instance_dict, 'id', None):
                     found_instance = instance_dict
                     break
             if found_instance:
-                print(BaseModel(**found_instance))
+                print(found_instance)
             else:
                 print("** no instance found **")
 
@@ -99,7 +98,7 @@ class HBNBCommand(cmd.Cmd):
 
             found_instance = None
             for key, instance_dict in instances.items():
-                if input_id == instance_dict['id']:
+                if input_id == getattr(instance_dict, 'id', None):
                     found_instance = key
                     break
 
@@ -117,7 +116,7 @@ class HBNBCommand(cmd.Cmd):
         output = []
         if arg in self.models or len(arg) == 0:
             for instance in instances.values():
-                output.append(str(BaseModel(**instance)))
+                output.append(str(instance))
             print(json.dumps(output))
         else:
             print("** class doesn't exist **")
@@ -171,9 +170,11 @@ class HBNBCommand(cmd.Cmd):
         attr_value = args[3].strip("\"'")
 
         if len(args) == 4:
-            ins = instances["{}.{}".format(args[0], args[1])]
-            ins[attr_name] = attr_value
-            storage.save()
+            ins_key = "{}.{}".format(args[0], args[1])
+            if ins_key in instances:
+                ins = instances[ins_key]
+                setattr(ins, attr_name, attr_value)
+                storage.save()
 
 
 if __name__ == '__main__':
