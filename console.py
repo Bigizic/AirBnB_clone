@@ -5,6 +5,12 @@ the command interpreter"""
 
 import cmd
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from models import storage
 import json
 
@@ -18,7 +24,8 @@ class HBNBCommand(cmd.Cmd):
 
     created_model = None
     created_id = None
-    models = ["BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
+    models = ["BaseModel", "User", "Place", "State", "City", "Amenity",
+            "Review"]
 
     def do_quit(self, arg):
         """Quit is command to exit the program"""
@@ -37,7 +44,8 @@ class HBNBCommand(cmd.Cmd):
         """
         if arg:
             if arg in self.models:
-                new_instance = BaseModel()
+                model_class = globals()[arg]
+                new_instance = model_class()
                 self.created_model = new_instance
                 self.created_id = new_instance.id
                 storage.save()
@@ -114,9 +122,14 @@ class HBNBCommand(cmd.Cmd):
         """
         instances = storage.all()
         output = []
-        if arg in self.models or len(arg) == 0:
+        if len(arg) == 0:
             for instance in instances.values():
                 output.append(str(instance))
+            print(json.dumps(output))
+        elif arg in self.models:
+            for instance in instances.values():
+                if arg == instance.__class__.__name__:
+                    output.append(str(instance))
             print(json.dumps(output))
         else:
             print("** class doesn't exist **")
