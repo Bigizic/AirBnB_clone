@@ -24,8 +24,8 @@ class HBNBCommand(cmd.Cmd):
 
     created_model = None
     created_id = None
-    models = ["BaseModel", "User", "Place", "State", "City", "Amenity",
-            "Review"]
+    models = ["BaseModel", "User", "Place", "State", "City",
+              "Amenity","Review"]
 
     def do_quit(self, arg):
         """Quit is command to exit the program"""
@@ -38,7 +38,7 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """shouldn’t execute anything"""
         pass
-    
+
     def do_create(self, arg):
         """Creates a new instance of BaseModel
         """
@@ -163,14 +163,14 @@ class HBNBCommand(cmd.Cmd):
                     break
             try:
                 for elements in args[1]:
-                    if type(eval(elements)) is int and found_id != True:
+                    if type(eval(elements)) is int and not found_id:
                         print("** no instance found **")
                         return False
             except Exception:
-                if isinstance(args[1], str) and found_id != True:
+                if isinstance(args[1], str) and not found_id:
                     print("** attribute name missing **")
                     return False
-            if found_id == True:
+            if found_id:
                 print("** attribute name missing **")
                 return False
 
