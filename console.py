@@ -25,7 +25,7 @@ class HBNBCommand(cmd.Cmd):
     created_model = None
     created_id = None
     models = ["BaseModel", "User", "Place", "State", "City",
-              "Amenity","Review"]
+              "Amenity", "Review"]
 
     def do_quit(self, arg):
         """Quit is command to exit the program"""
