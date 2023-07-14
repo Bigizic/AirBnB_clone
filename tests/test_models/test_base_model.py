@@ -108,9 +108,9 @@ class Test_base_model_foundations(unittest.TestCase):
 
         self.assertEqual(my_kwargs.id, '1234-5678')
         self.assertEqual(my_kwargs.created_at.isoformat(),
-                '2017-09-28T21:03:54.052298')
+                         '2017-09-28T21:03:54.052298')
         self.assertEqual(my_kwargs.updated_at.isoformat(),
-                '2017-09-28T21:03:54.052302')
+                         '2017-09-28T21:03:54.052302')
         self.assertNotEqual(my_args.id, 'Hol')
         self.assertNotEqual(my_args.created_at, 'Bet')
         self.assertNotEqual(my_args.updated_at, 'TTy')
