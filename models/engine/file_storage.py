@@ -42,10 +42,7 @@ class FileStorage:
         self.__objects[key] = obj
 
     def save(self):
-        """Serializes the __objects to the JSON file path, if the obj has
-            an attr 'to_dict' and if the 'to_dict' can be called as a
-            function it sets the data[key] to the callable function,
-            otherwise it sets the data[key] to the obj
+        """Serializes the __objects to the JSON file path
         """
         with open(self.__file_path, "w") as open_file:
             data = {key: obj.to_dict() for key, obj in
