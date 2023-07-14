@@ -75,6 +75,9 @@ This test module contain tests for:
         8h. A check if the attribute passed to the do_update() has a value
             and it's beiong updated, that means the value only gets
             updated, because the object already contain the key
+
+ALL TESTS WOULD BE TESTED WITH INFINITY AND DIFFERENT TYPES AS ARGUMENTS
+ALONGSIDE COMMANDS
 """
 
 import cmd
