@@ -70,9 +70,49 @@ class Test_base_model_foundations(unittest.TestCase):
         except ValueError:
             return False
 
+    # test if str prints the correct string format
     def test_str_correct_fromat(self):
         my_model = BaseModel()
         dct = str(my_model.__dict__)
         cla = my_model.__class__.__name__
         expected = "[{}] ({}) {}" .format(cla, my_model.id, dct)
         self.assertEqual(str(my_model), expected, None)
+
+    # test if to_dict returns a dictionary containing all keys and
+        # values of the instance
+    def test_to_dict_dictionary_type(self):
+        my_model = BaseModel()
+        self.assertIsInstance(my_model.to_dict(), dict, None)
+
+    # test if args is being used, in this test we don't want to use args
+        # so we have to test if it's being used in the code
+    def test_if_args_is_being_used(self):
+        """In this test i created a dictionary and added it to the
+            BaseModel kwargs using the double pointer as refernce to
+            kwargs, then i created an args and added it to the BaseModel
+            the BaseModel should accept the kwargs but not args,
+            how do i know this?? The BaseModel was built to accept kwargs
+            only, so passing arguments in args thought to be the id and
+            other attribute should not be equal to the BaseModel
+            attributes, that's why i used the NotEqual to compare args
+        """
+        model_dict = {
+                'id': '1234-5678',
+                'created_at': '2017-09-28T21:03:54.052298',
+                'updated_at': '2017-09-28T21:03:54.052302',
+                'name': 'Isaac'
+        }
+        my_kwargs = BaseModel(**model_dict)
+
+        my_args = BaseModel('Hol', 'Bet', 'TTy')
+
+        self.assertEqual(my_kwargs.id, '1234-5678')
+        self.assertEqual(my_kwargs.created_at.isoformat(),
+                '2017-09-28T21:03:54.052298')
+        self.assertEqual(my_kwargs.updated_at.isoformat(),
+                '2017-09-28T21:03:54.052302')
+        self.assertNotEqual(my_args.id, 'Hol')
+        self.assertNotEqual(my_args.created_at, 'Bet')
+        self.assertNotEqual(my_args.updated_at, 'TTy')
+        # check if args has the atribute name
+        self.assertFalse(hasattr(my_args, 'name'))
