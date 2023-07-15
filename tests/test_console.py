@@ -452,8 +452,8 @@ class TestHBNBCommand_update(unittest.TestCase):
         my_id = console.id
         expected_output = "** value missing **"
         with patch("sys.stdout", new=StringIO()) as output:
-            self.assertFalse(HBNBCommand().onecmd(
-                "update BaseModel " + my_id + " some_attribute"))
+            self.assertFalse(HBNBCommand().onecmd("update BaseModel " +
+                                            my_id + " some_attribute"))
             self.assertEqual(expected_output, output.getvalue().strip())
 
     # test if do_update() ignores attribute id
