@@ -274,4 +274,105 @@ class Test_console(unittest.TestCase):
     # test if the do_destroy() raises a msg when it's called alone
     # without a class name
     @patch('sys.stdout', new_callable=StringIO)
-    def test_do_destroy_
+    def test_do_destroy_class_name_missing(self, mock_stdout):
+        console = HBNBCommand()
+        expected = "** class name missing **\n"
+        console.do_destroy("")
+        self.assertEqual(mock_stdout.getvalue(), expected)
+
+
+    # test if the do_destroy() raises a msg when a class that doesn't
+    # exist is called along the command
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_do_destroy_class_does_not_exist(self, mock_stdout):
+        console = HBNBCommand()
+        expected = "** class doesn't exist **\n"
+        classes = ["Hello", None, 3, 3.142, float('inf'), -float('inf'),
+                    True, False]
+        for model_cls in classes:
+            console.do_destroy(str(model_cls))
+            self.assertEqual(mock_stdout.getvalue(), expected)
+            mock_stdout.seek(0)
+            mock_stdout.truncate(0)
+
+
+    # test if the do_destroy() raises a msg when a class that exist is
+    # only passed as the argument but no id
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_do_destroy_instance_id_missing(self, mock_stdout):
+        console = HBNBCommand()
+        expected = "** instance id missing **\n"
+        classes = [BaseModel, User, Place, City, State, Amenity, Review]
+        for model_class in classes:
+            class_name = model_class.__name__
+            created_id = ""
+            arg = "{} {}".format(class_name, created_id)
+            console.do_destroy(arg)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+            mock_stdout.seek(0)
+            mock_stdout.truncate(0)
+
+
+    # test if the do_destroy() raises a msg when a class that exist is
+    # passed along side an id that doesn't exist
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_do_destroy_no_instance_found(self, mock_stdout):
+        console = HBNBCommand()
+        classes = [BaseModel, User, Place, City, State, Amenity, Review]
+        expected = "** no instance found **\n"
+        for model_class in classes:
+            class_name = model_class.__name__
+            created_id = "fce12f8a-fdb6-439a-afe8-2881754de71c"
+            arg = "{} {}".format(class_name, created_id)
+            console.do_destroy(arg)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+            mock_stdout.seek(0)
+            mock_stdout.truncate(0)
+
+
+    # test  if the do_all() prints all string representation of all
+    # instances based or not on the class name
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_do_all_method(self, mock_stdout):
+        console = HBNBCommand()
+        classes = [BaseModel, User, Place, City, State, Amenity, Review]
+        for model_class in classes:
+            class_name = model_class.__name__
+            console.do_create(class_name)
+            mock_stdout.seek(0)
+            mock_stdout.truncate(0)
+
+        # call do_all() without passing any class name to it
+        console.do_all("")
+        output = mock_stdout.getvalue().strip()
+        instances = storage.all()
+
+        for instance in instances.values():
+            self.assertIn(str(instance), output)
+
+        mock_stdout.seek(0)
+        mock_stdout.truncate(0)
+
+
+    # test do_all() with class name
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_do_all_method_with_class_name(self, mock_stdout):
+        console = HBNBCommand()
+        classes = [BaseModel, User, Place, City, State, Amenity, Review]
+        for model_class in classes:
+            class_name = model_class.__name__
+            console.do_create(class_name)
+            mock_stdout.seek(0)
+            mock_stdout.truncate(0)
+
+        for cls in classes:
+            cls_name = cls.__name__
+            console.do_all("all " + cls_name)
+            output = mock_stdout.getvalue().strip()
+
+            for clas in classes:
+                clas_name = clas.__name__
+                if clas_name in output:
+                    self.assertIn(clas_name, output)
+                else:
+                    self.assertNotIn(clas_name, output)
