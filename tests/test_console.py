@@ -463,7 +463,7 @@ class TestHBNBCommand_update(unittest.TestCase):
         console = BaseModel()
         my_id = console.id
         mod = "update BaseModel "
-        att =" id 1234"
+        att = " id 1234"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(mod + my_id + att))
             self.assertEqual(expected_output, output.getvalue().strip())
@@ -511,7 +511,6 @@ class TestHBNBCommand_update(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(mod + my_id + att))
             self.assertEqual(expected_output, output.getvalue().strip())
-
 
 
 if __name__ == '__main__':
