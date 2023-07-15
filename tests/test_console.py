@@ -163,3 +163,21 @@ class Test_console(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     # test if the do_show() prints the string representation of an
     # instance based on the class name and the id
+    def test_show_command(self, mock_stdout):
+        console = HBNBCommand()
+        classes = [BaseModel, User, Place, City, State, Amenity, Review]
+        for model_class in classes:
+            class_name = model_class.__name__
+            console.do_create(class_name)
+            created_id = mock_stdout.getvalue().strip()
+            mock_stdout.seek(0)
+            mock_stdout.truncate(0)
+
+            # call do_show
+            arg = "{} {}".format(class_name, created_id)
+            console.do_show(arg)
+            dct = console.created_model.__dict__
+            expected = "[{}] ({}) {}" .format(class_name, created_id, dct)
+            self.assertEqual(mock_stdout.getvalue().strip(), expected)
+            mock_stdout.seek(0)
+            mock_stdout.truncate(0)
