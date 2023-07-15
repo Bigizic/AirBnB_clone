@@ -8,4 +8,5 @@ class Amenity(BaseModel):
     Attributes:
     name (string): empty string.
     """
+
     name = ""

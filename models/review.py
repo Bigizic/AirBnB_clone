@@ -10,6 +10,7 @@ class Review(BaseModel):
     user_id (string): empty string will be User.id.
     text (string): empty string(the review of the user).
     """
+
     place_id = ""
     user_id = ""
     text = ""
