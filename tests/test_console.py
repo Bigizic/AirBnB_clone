@@ -376,3 +376,133 @@ class Test_console(unittest.TestCase):
                     self.assertIn(clas_name, output)
                 else:
                     self.assertNotIn(clas_name, output)
+
+    # test if the do_all() raises a msg when a class name that doesn't
+    # exist is passed along side the all() command
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_do_all_class_does_not_exist(self, mock_stdout):
+        console = HBNBCommand()
+        expected = "** class doesn't exist **\n"
+        classes = ["Hello", None, 3, 3.142, float('inf'), -float('inf'),
+                    True, False]
+        for model_cls in classes:
+            console.do_all(str(model_cls))
+            self.assertEqual(mock_stdout.getvalue(), expected)
+            mock_stdout.seek(0)
+            mock_stdout.truncate(0)
+
+
+class TestHBNBCommand_update(unittest.TestCase):
+    """do_update() test cases
+    """
+
+    # test if do_update() raises a message when no arguments are passed
+    def test_do_update_no_arguments(self):
+        expected_output = "** class name missing **"
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("update"))
+            self.assertEqual(expected_output, output.getvalue().strip())
+
+    # test if do_update() raises a message when the class name doesn't exist
+    def test_do_update_class_name_missing(self):
+        expected_output = "** class doesn't exist **"
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("update MyModel"))
+            self.assertEqual(expected_output, output.getvalue().strip())
+
+    # test if do_update() raises a message when the class name is
+    # provided but the next argument is empty
+    def test_do_update_missing_id(self):
+        expected_output = "** instance id missing **"
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("update BaseModel"))
+            self.assertEqual(expected_output, output.getvalue().strip())
+
+    # test if do_update() raises a message when the instance doesn't
+    # exist or the attribute name is missing
+    def test_do_update_attribute_missing_digit(self):
+        # case when instance doesn't exist (ID starts with a digit)
+        expected_output = "** no instance found **"
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("update BaseModel 1234"))
+            self.assertEqual(expected_output, output.getvalue().strip())
+
+    # test when instance doesn't exist (ID starts with a string)
+    def test_do_update_instance_not_found_string(self):
+        # case when instance doesn't exist (ID starts with an alphabet)
+        expected_output = "** attribute name missing **"
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("update BaseModel my_id"))
+            self.assertEqual(expected_output, output.getvalue().strip())
+
+
+    # test when instance exists but attribute name is missing
+    def test_do_update_instance_exist_msg(self):
+        console = BaseModel()
+        i_d = console.id
+        expected_output = "** attribute name missing **"
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("update BaseModel " + i_d))
+            self.assertEqual(expected_output, output.getvalue().strip())
+
+    # test if do_update() raises a message when the attribute value is
+    # not a dictionary
+    def test_do_update_attribute_value_not_dict(self):
+        console = BaseModel()
+        my_id = console.id
+        expected_output = "** value missing **"
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("update BaseModel " + my_id + " some_attribute"))
+            self.assertEqual(expected_output, output.getvalue().strip())
+
+    # test if do_update() ignores attribute id
+    def test_do_update_ignores_reserved_id_attribute(self):
+        expected_output = ""
+        console = BaseModel()
+        my_id = console.id
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("update BaseModel " + my_id + " id 1234"))
+            self.assertEqual(expected_output, output.getvalue().strip())
+
+    # test if do_update() ignores attribute created_at
+    def test_do_update_ignores_reserved_created_at_attribute(self):
+        expected_output = ""
+        console = BaseModel()
+        my_id = console.id
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("update BaseModel " + my_id + " created_at 2022-01-01T00:00:00"))
+            self.assertEqual(expected_output, output.getvalue().strip())
+
+    # test if do_update() ignores attribute updated_at
+    def test_do_update_ignores_reserved_updated_at_attribute(self):
+        expected_output = ""
+        console = BaseModel()
+        my_id = console.id
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("update BaseModel " + my_id + " updated_at 2022-01-01T00:00:00"))
+            self.assertEqual(expected_output, output.getvalue().strip())
+
+
+    # test if do_update() correctly adds an attribute to an instance
+    def test_do_update_adds_attribute_to_instance(self):
+        expected_output = ""
+        console = BaseModel()
+        my_id = console.id
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("update BaseModel " + my_id + " first_name Isaac"))
+            self.assertEqual(expected_output, output.getvalue().strip())
+
+
+    # test if do_update() correctly updates an attribute of an instance
+    def test_do_update_updates_attribute_of_instance(self):
+        expected_output = ""
+        console = BaseModel()
+        my_id = console.id
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("update BaseModel " + my_id + " first_name Betty"))
+            self.assertEqual(expected_output, output.getvalue().strip())
+
+
+
+if __name__ == '__main__':
+    unittest.main()
