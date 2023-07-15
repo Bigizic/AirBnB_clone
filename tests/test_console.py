@@ -435,8 +435,8 @@ class TestHBNBCommand_update(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("update BaseModel my_id"))
             self.assertEqual(expected_output, output.getvalue().strip())
 
-
     # test when instance exists but attribute name is missing
+
     def test_do_update_instance_exist_msg(self):
         console = BaseModel()
         i_d = console.id
@@ -452,7 +452,8 @@ class TestHBNBCommand_update(unittest.TestCase):
         my_id = console.id
         expected_output = "** value missing **"
         with patch("sys.stdout", new=StringIO()) as output:
-            self.assertFalse(HBNBCommand().onecmd("update BaseModel " + my_id + " some_attribute"))
+            self.assertFalse(HBNBCommand().onecmd(
+                "update BaseModel " + my_id + " some_attribute"))
             self.assertEqual(expected_output, output.getvalue().strip())
 
     # test if do_update() ignores attribute id
@@ -461,7 +462,8 @@ class TestHBNBCommand_update(unittest.TestCase):
         console = BaseModel()
         my_id = console.id
         with patch("sys.stdout", new=StringIO()) as output:
-            self.assertFalse(HBNBCommand().onecmd("update BaseModel " + my_id + " id 1234"))
+            self.assertFalse(HBNBCommand().onecmd(
+                "update BaseModel " + my_id + " id 1234"))
             self.assertEqual(expected_output, output.getvalue().strip())
 
     # test if do_update() ignores attribute created_at
@@ -470,7 +472,8 @@ class TestHBNBCommand_update(unittest.TestCase):
         console = BaseModel()
         my_id = console.id
         with patch("sys.stdout", new=StringIO()) as output:
-            self.assertFalse(HBNBCommand().onecmd("update BaseModel " + my_id + " created_at 2022-01-01T00:00:00"))
+            self.assertFalse(HBNBCommand().onecmd("update BaseModel "
+                + my_id + " created_at 2022-01-01T00:00:00"))
             self.assertEqual(expected_output, output.getvalue().strip())
 
     # test if do_update() ignores attribute updated_at
@@ -479,9 +482,9 @@ class TestHBNBCommand_update(unittest.TestCase):
         console = BaseModel()
         my_id = console.id
         with patch("sys.stdout", new=StringIO()) as output:
-            self.assertFalse(HBNBCommand().onecmd("update BaseModel " + my_id + " updated_at 2022-01-01T00:00:00"))
+            self.assertFalse(HBNBCommand().onecmd("update BaseModel "
+                + my_id + " updated_at 2022-01-01T00:00:00"))
             self.assertEqual(expected_output, output.getvalue().strip())
-
 
     # test if do_update() correctly adds an attribute to an instance
     def test_do_update_adds_attribute_to_instance(self):
@@ -489,9 +492,9 @@ class TestHBNBCommand_update(unittest.TestCase):
         console = BaseModel()
         my_id = console.id
         with patch("sys.stdout", new=StringIO()) as output:
-            self.assertFalse(HBNBCommand().onecmd("update BaseModel " + my_id + " first_name Isaac"))
+            self.assertFalse(HBNBCommand().onecmd("
+                update BaseModel " + my_id + " first_name Isaac"))
             self.assertEqual(expected_output, output.getvalue().strip())
-
 
     # test if do_update() correctly updates an attribute of an instance
     def test_do_update_updates_attribute_of_instance(self):
@@ -499,7 +502,8 @@ class TestHBNBCommand_update(unittest.TestCase):
         console = BaseModel()
         my_id = console.id
         with patch("sys.stdout", new=StringIO()) as output:
-            self.assertFalse(HBNBCommand().onecmd("update BaseModel " + my_id + " first_name Betty"))
+            self.assertFalse(HBNBCommand().onecmd("
+                update BaseModel " + my_id + " first_name Betty"))
             self.assertEqual(expected_output, output.getvalue().strip())
 
 
