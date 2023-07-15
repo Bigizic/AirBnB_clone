@@ -141,7 +141,7 @@ class Test_console(unittest.TestCase):
     def test_create_class_not_exist(self, mock_stdout):
         console = HBNBCommand()
         classes = ["Hello", None, 3, 3.142, float('inf'), -float('inf'),
-                    True, False]
+                   True, False]
         expected = "** class doesn't exist **\n"
         for model_cls in classes:
             console.do_create(str(model_cls))
@@ -198,7 +198,7 @@ class Test_console(unittest.TestCase):
     def test_show_class_does_not_exist(self, mock_stdout):
         console = HBNBCommand()
         classes = ["Hello", None, 3, 3.142, float('inf'), -float('inf'),
-                    True, False]
+                   True, False]
         expected = "** class doesn't exist **\n"
         for model_cls in classes:
             console.do_show(str(model_cls))
@@ -288,7 +288,7 @@ class Test_console(unittest.TestCase):
         console = HBNBCommand()
         expected = "** class doesn't exist **\n"
         classes = ["Hello", None, 3, 3.142, float('inf'), -float('inf'),
-                    True, False]
+                   True, False]
         for model_cls in classes:
             console.do_destroy(str(model_cls))
             self.assertEqual(mock_stdout.getvalue(), expected)
@@ -384,7 +384,7 @@ class Test_console(unittest.TestCase):
         console = HBNBCommand()
         expected = "** class doesn't exist **\n"
         classes = ["Hello", None, 3, 3.142, float('inf'), -float('inf'),
-                    True, False]
+                   True, False]
         for model_cls in classes:
             console.do_all(str(model_cls))
             self.assertEqual(mock_stdout.getvalue(), expected)
