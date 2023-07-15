@@ -50,23 +50,23 @@ class Test_file_storage_foundations(unittest.TestCase):
         self.assertEqual(my_store._FileStorage__objects[key], obj)
 
     # test if the save() serialzies the objects and saves it to the json
-        # file path
+    # file path
     def test_save_method(self):
         my_store = FileStorage()
         obj = BaseModel()
         my_store.new(obj)
         my_store.save()
 
-        # Opens the file for reading 
+        # Opens the file for reading
         with open(my_store._FileStorage__file_path, "r") as open_file:
             data = open_file.read()
             # check if the data saved in the file path is not empty
-             # returns truw as it's not equal to empty object
+            # returns truw as it's not equal to empty object
             self.assertNotEqual(data, "")
-
 
     # test if the reload() sucessfully reloads from the file path and
     # sets the __objects to the data it was able to read from the file
+
     def test_reload_method(self):
         my_store = FileStorage()
         obj = BaseModel()
@@ -75,9 +75,8 @@ class Test_file_storage_foundations(unittest.TestCase):
         my_store.reload()
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
         self.assertEqual(key in my_store._FileStorage__objects, True)
-        self.assertEqual(
-                my_store._FileStorage__objects[key].__class__.__name__,\
-                        "BaseModel")
+        cls_name = my_store._FileStorage__objects[key].__class__.__name__
+        self.assertEqual(cls_name, "BaseModel")
 
     # test when new() is called upon User() class, if it outputs correct
     # format
@@ -89,7 +88,6 @@ class Test_file_storage_foundations(unittest.TestCase):
         self.assertEqual(key in my_store._FileStorage__objects, True)
         self.assertEqual(my_store._FileStorage__objects[key], obj)
 
-
     # test when new() is called upon State() class, if it outputs correct
     # format
     def test_new_state_method(self):
@@ -99,7 +97,6 @@ class Test_file_storage_foundations(unittest.TestCase):
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
         self.assertEqual(key in my_store._FileStorage__objects, True)
         self.assertEqual(my_store._FileStorage__objects[key], obj)
-
 
     # test when new() is called upon City() class, if it outputs correct
     # format
@@ -111,7 +108,6 @@ class Test_file_storage_foundations(unittest.TestCase):
         self.assertEqual(key in my_store._FileStorage__objects, True)
         self.assertEqual(my_store._FileStorage__objects[key], obj)
 
-
     # test when new() is called upon Amenity() class, if it outputs correct
     # format
     def test_new_amenity_method(self):
@@ -122,7 +118,6 @@ class Test_file_storage_foundations(unittest.TestCase):
         self.assertEqual(key in my_store._FileStorage__objects, True)
         self.assertEqual(my_store._FileStorage__objects[key], obj)
 
-
     # test when new() is called upon Place() class, if it outputs correct
     # format
     def test_new_place_method(self):
@@ -132,7 +127,6 @@ class Test_file_storage_foundations(unittest.TestCase):
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
         self.assertEqual(key in my_store._FileStorage__objects, True)
         self.assertEqual(my_store._FileStorage__objects[key], obj)
-
 
     # test when new() is called upon Review() class, if it outputs correct
     # format
