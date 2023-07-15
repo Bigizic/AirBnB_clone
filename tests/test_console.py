@@ -80,17 +80,70 @@ ALL TESTS WOULD BE TESTED WITH INFINITY AND DIFFERENT TYPES AS ARGUMENTS
 ALONGSIDE COMMANDS
 """
 
-import cmd
 from models.base_model import BaseModel
-from models.user import User
+from models.amenity import Amenity
+from models.review import Review
+from console import HBNBCommand
+from unittest.mock import patch
+from models.place import Place
 from models.state import State
 from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
+from models.user import User
 from models import storage
-import json
+from io import StringIO
 import unittest
+import json
+import cmd
 
 
-class Test_console(unittest.TestCase)
+class Test_console(unittest.TestCase):
+    """Test foundations
+        @path('sys.stdout', new_callable=StringIO) is used to capture the
+        output printed to the standard output during the execution of each
+        command
+    """
+    @patch('sys.stdout', new_callable=StringIO)
+    # test case if do_quit succesfully exit the program
+    def test_quit_command(self, mock_stdout):
+        console = HBNBCommand()
+        self.assertTrue(console.do_quit(""))
+        self.assertEqual(mock_stdout.getvalue(), "")
+
+    @patch('sys.stdout', new_callable=StringIO)
+    # test case if do_EOF successfulyy exit the program
+    def test_eof_command(self, mock_stdout):
+        console = HBNBCommand()
+        self.assertTrue(console.do_EOF(""))
+        self.assertEqual(mock_stdout.getvalue(), "")
+
+    @patch('sys.stdout', new_callable=StringIO)
+    #test case if the emptyline() doesn't execute anything
+    def test_emptyline_command(self, mock_stdout):
+        console = HBNBCommand()
+        self.assertFalse(console.emptyline(), "")
+        self.assertFalse(console.emptyline(), None)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    # test if do_create creates a new instance of allclasses
+    def test_create_command(self, mock_stdout):
+        console = HBNBCommand()
+        classes = [BaseModel, User, Place, City, State, Amenity, Review]
+        for model_class in classes:
+            class_name = model_class.__name__
+            console.do_create(class_name)
+            created_instance = console.created_model
+            self.assertIsInstance(created_instance, model_class)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    # test if do_create raises a msg while trying to create a class that
+    # doesn't exist
+    def test_create_class_not_exist(self, mock_stdout):
+        console = HBNBCommand()
+        classes = ["Hello", None, 3, 3.142, float('inf'), -float('inf'),
+                    True, False]
+        for model_cls in classes:
+            console.do_create(model_cls)
+            expected = "** class doesn't exist **\n"
+            special_case = "** class name missing **"
+            self.assertEqual(mock_stdout.getvalue(), expected)
+            self.assertFalse(special_case in mock_stdout.getvalue())
