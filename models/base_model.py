@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Class Module
-A class BaseModel that defines all common attributes/methods for other
+A class BaseModel that defines all common
+attributes/methods for other
 classes.
 
 Args:
@@ -21,7 +22,8 @@ import models
 class BaseModel:
     """Main Class
 
-    BaseModel that defines all common attributes/methods for other classes
+    BaseModel that defines all common
+    attributes/methods for other classes
     """
 
     def __init__(self, *args, **kwargs):
@@ -56,9 +58,10 @@ class BaseModel:
         models.storage.save()
 
     def to_dict(self):
-        """returns self.__dict__, sets object class to class name,
-            converts created_at and updated_at to  string obj in
-            ISO format
+        """returns self.__dict__,
+        sets object class to class name,
+        converts created_at and updated_at to  string obj in
+        ISO format
         """
         obj_dict = self.__dict__.copy()
         obj_dict["__class__"] = self.__class__.__name__
