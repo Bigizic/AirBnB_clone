@@ -239,9 +239,9 @@ class Test_console(unittest.TestCase):
             mock_stdout.seek(0)
             mock_stdout.truncate(0)
 
-
     # test if the do_destory() deletes an instance based on the class
     # name and id, also save the changes into the Json file
+
     @patch('sys.stdout', new_callable=StringIO)
     def test_do_destroy(self, mock_stdout):
         console = HBNBCommand()
@@ -270,9 +270,9 @@ class Test_console(unittest.TestCase):
             mock_stdout.seek(0)
             mock_stdout.truncate(0)
 
-
     # test if the do_destroy() raises a msg when it's called alone
     # without a class name
+
     @patch('sys.stdout', new_callable=StringIO)
     def test_do_destroy_class_name_missing(self, mock_stdout):
         console = HBNBCommand()
@@ -280,9 +280,9 @@ class Test_console(unittest.TestCase):
         console.do_destroy("")
         self.assertEqual(mock_stdout.getvalue(), expected)
 
-
     # test if the do_destroy() raises a msg when a class that doesn't
     # exist is called along the command
+
     @patch('sys.stdout', new_callable=StringIO)
     def test_do_destroy_class_does_not_exist(self, mock_stdout):
         console = HBNBCommand()
@@ -295,9 +295,9 @@ class Test_console(unittest.TestCase):
             mock_stdout.seek(0)
             mock_stdout.truncate(0)
 
-
     # test if the do_destroy() raises a msg when a class that exist is
     # only passed as the argument but no id
+
     @patch('sys.stdout', new_callable=StringIO)
     def test_do_destroy_instance_id_missing(self, mock_stdout):
         console = HBNBCommand()
@@ -312,9 +312,9 @@ class Test_console(unittest.TestCase):
             mock_stdout.seek(0)
             mock_stdout.truncate(0)
 
-
     # test if the do_destroy() raises a msg when a class that exist is
     # passed along side an id that doesn't exist
+
     @patch('sys.stdout', new_callable=StringIO)
     def test_do_destroy_no_instance_found(self, mock_stdout):
         console = HBNBCommand()
@@ -329,9 +329,9 @@ class Test_console(unittest.TestCase):
             mock_stdout.seek(0)
             mock_stdout.truncate(0)
 
-
     # test  if the do_all() prints all string representation of all
     # instances based or not on the class name
+
     @patch('sys.stdout', new_callable=StringIO)
     def test_do_all_method(self, mock_stdout):
         console = HBNBCommand()
@@ -352,7 +352,6 @@ class Test_console(unittest.TestCase):
 
         mock_stdout.seek(0)
         mock_stdout.truncate(0)
-
 
     # test do_all() with class name
     @patch('sys.stdout', new_callable=StringIO)
@@ -379,6 +378,7 @@ class Test_console(unittest.TestCase):
 
     # test if the do_all() raises a msg when a class name that doesn't
     # exist is passed along side the all() command
+
     @patch('sys.stdout', new_callable=StringIO)
     def test_do_all_class_does_not_exist(self, mock_stdout):
         console = HBNBCommand()
