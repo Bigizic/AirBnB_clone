@@ -80,6 +80,7 @@ ALL TESTS WOULD BE TESTED WITH INFINITY AND DIFFERENT TYPES AS ARGUMENTS
 ALONGSIDE COMMANDS
 """
 
+from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models.amenity import Amenity
 from models.review import Review
@@ -102,29 +103,29 @@ class Test_console(unittest.TestCase):
         output printed to the standard output during the execution of each
         command
     """
-    @patch('sys.stdout', new_callable=StringIO)
     # test case if do_quit succesfully exit the program
+    @patch('sys.stdout', new_callable=StringIO)
     def test_quit_command(self, mock_stdout):
         console = HBNBCommand()
         self.assertTrue(console.do_quit(""))
         self.assertEqual(mock_stdout.getvalue(), "")
 
-    @patch('sys.stdout', new_callable=StringIO)
     # test case if do_EOF successfulyy exit the program
+    @patch('sys.stdout', new_callable=StringIO)
     def test_eof_command(self, mock_stdout):
         console = HBNBCommand()
         self.assertTrue(console.do_EOF(""))
         self.assertEqual(mock_stdout.getvalue(), "")
 
-    @patch('sys.stdout', new_callable=StringIO)
     #test case if the emptyline() doesn't execute anything
+    @patch('sys.stdout', new_callable=StringIO)
     def test_emptyline_command(self, mock_stdout):
         console = HBNBCommand()
         self.assertFalse(console.emptyline(), "")
         self.assertFalse(console.emptyline(), None)
 
-    @patch('sys.stdout', new_callable=StringIO)
     # test if do_create creates a new instance of allclasses
+    @patch('sys.stdout', new_callable=StringIO)
     def test_create_command(self, mock_stdout):
         console = HBNBCommand()
         classes = [BaseModel, User, Place, City, State, Amenity, Review]
@@ -134,9 +135,9 @@ class Test_console(unittest.TestCase):
             created_instance = console.created_model
             self.assertIsInstance(created_instance, model_class)
 
-    @patch('sys.stdout', new_callable=StringIO)
     # test if do_create raises a msg while trying to create a class that
     # doesn't exist
+    @patch('sys.stdout', new_callable=StringIO)
     def test_create_class_not_exist(self, mock_stdout):
         console = HBNBCommand()
         classes = ["Hello", None, 3, 3.142, float('inf'), -float('inf'),
@@ -150,9 +151,9 @@ class Test_console(unittest.TestCase):
             mock_stdout.seek(0)
             mock_stdout.truncate(0)
 
-    @patch('sys.stdout', new_callable=StringIO)
     # test if do_create raises a msg when the command is entered
     # without any class name
+    @patch('sys.stdout', new_callable=StringIO)
     def test_create_class_name_missing(self, mock_stdout):
         console = HBNBCommand()
         expected = "** class name missing **\n"
@@ -160,9 +161,9 @@ class Test_console(unittest.TestCase):
         self.assertEqual(mock_stdout.getvalue(), expected)
 
 
-    @patch('sys.stdout', new_callable=StringIO)
     # test if the do_show() prints the string representation of an
     # instance based on the class name and the id
+    @patch('sys.stdout', new_callable=StringIO)
     def test_show_command(self, mock_stdout):
         console = HBNBCommand()
         classes = [BaseModel, User, Place, City, State, Amenity, Review]
@@ -181,3 +182,96 @@ class Test_console(unittest.TestCase):
             self.assertEqual(mock_stdout.getvalue().strip(), expected)
             mock_stdout.seek(0)
             mock_stdout.truncate(0)
+
+    # test if the do_show() raises a msg when it's called alone, without
+    # a class name
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_show_class_name_missing(self, mock_stdout):
+        console = HBNBCommand()
+        expected = "** class name missing **\n"
+        console.do_show("")
+        self.assertEqual(mock_stdout.getvalue(), expected)
+
+    # test if the do_show() raises a msg when a class that doesn't exist
+    # is called along the show command
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_show_class_does_not_exist(self, mock_stdout):
+        console = HBNBCommand()
+        classes = ["Hello", None, 3, 3.142, float('inf'), -float('inf'),
+                    True, False]
+        expected = "** class doesn't exist **\n"
+        for model_cls in classes:
+            console.do_show(str(model_cls))
+            self.assertEqual(mock_stdout.getvalue(), expected)
+            mock_stdout.seek(0)
+            mock_stdout.truncate(0)
+
+    # test if the do_show() raises a msg when a class that exist is only
+    # passed as the argument but no id
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_show_instance_id_missing(self, mock_stdout):
+        console = HBNBCommand()
+        classes = [BaseModel, User, Place, City, State, Amenity, Review]
+        expected = "** instance id missing **\n"
+        for model_class in classes:
+            class_name = model_class.__name__
+            created_id = ""
+            arg = "{} {}".format(class_name, created_id)
+            console.do_show(arg)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+            mock_stdout.seek(0)
+            mock_stdout.truncate(0)
+
+
+    # test if the do_show() raises a msg when a class that exist is
+    # passed along side an id that doesn't exist
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_show_no_instance_found(self, mock_stdout):
+        console = HBNBCommand()
+        classes = [BaseModel, User, Place, City, State, Amenity, Review]
+        expected = "** no instance found **\n"
+        for model_class in classes:
+            class_name = model_class.__name__
+            created_id = "246c227a-d5c1-403d-9bc7-6a47bb9f0f68"
+            arg = "{} {}".format(class_name, created_id)
+            console.do_show(arg)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+            mock_stdout.seek(0)
+            mock_stdout.truncate(0)
+
+
+    # test if the do_destory() deletes an instance based on the class
+    # name and id, also save the changes into the Json file
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_do_destroy(self, mock_stdout):
+        console = HBNBCommand()
+        classes = [BaseModel, User, Place, City, State, Amenity, Review]
+        for model_class in classes:
+            class_name = model_class.__name__
+            console.do_create(class_name)
+            # get the output from do_create
+            created_id = mock_stdout.getvalue().strip()
+            mock_stdout.seek(0)
+            mock_stdout.truncate(0)
+
+            arg = "{} {}".format(class_name, created_id)
+
+            console.do_destroy(arg)
+            instances = storage.all()
+            instance_key = "{}.{}".format(class_name, created_id)
+            # check if instance is deleted
+            self.assertNotIn(instance_key, instances)
+
+            # check if the instamnce is correctly removed from the file
+            f_store = FileStorage()
+            with open(f_store._FileStorage__file_path, "r") as open_file:
+                data = json.load(open_file)
+                self.assertNotIn(instance_key, data)
+            mock_stdout.seek(0)
+            mock_stdout.truncate(0)
+
+
+    # test if the do_destroy() raises a msg when it's called alone
+    # without a class name
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_do_destroy_
