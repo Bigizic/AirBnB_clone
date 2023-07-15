@@ -117,7 +117,7 @@ class Test_console(unittest.TestCase):
         self.assertTrue(console.do_EOF(""))
         self.assertEqual(mock_stdout.getvalue(), "")
 
-    #test case if the emptyline() doesn't execute anything
+    # test case if the emptyline() doesn't execute anything
     @patch('sys.stdout', new_callable=StringIO)
     def test_emptyline_command(self, mock_stdout):
         console = HBNBCommand()
@@ -160,9 +160,9 @@ class Test_console(unittest.TestCase):
         console.do_create("")
         self.assertEqual(mock_stdout.getvalue(), expected)
 
-
     # test if the do_show() prints the string representation of an
     # instance based on the class name and the id
+
     @patch('sys.stdout', new_callable=StringIO)
     def test_show_command(self, mock_stdout):
         console = HBNBCommand()
@@ -222,9 +222,9 @@ class Test_console(unittest.TestCase):
             mock_stdout.seek(0)
             mock_stdout.truncate(0)
 
-
     # test if the do_show() raises a msg when a class that exist is
     # passed along side an id that doesn't exist
+
     @patch('sys.stdout', new_callable=StringIO)
     def test_show_no_instance_found(self, mock_stdout):
         console = HBNBCommand()
