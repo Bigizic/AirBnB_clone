@@ -141,9 +141,25 @@ class Test_console(unittest.TestCase):
         console = HBNBCommand()
         classes = ["Hello", None, 3, 3.142, float('inf'), -float('inf'),
                     True, False]
+        expected = "** class doesn't exist **\n"
         for model_cls in classes:
-            console.do_create(model_cls)
-            expected = "** class doesn't exist **\n"
-            special_case = "** class name missing **"
+            console.do_create(str(model_cls))
             self.assertEqual(mock_stdout.getvalue(), expected)
-            self.assertFalse(special_case in mock_stdout.getvalue())
+            # ensure that mock_stdout buffer is reset to it's intial state
+            # before the next iteration of the loop
+            mock_stdout.seek(0)
+            mock_stdout.truncate(0)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    # test if do_create raises a msg when the command is entered
+    # without any class name
+    def test_create_class_name_missing(self, mock_stdout):
+        console = HBNBCommand()
+        expected = "** class name missing **\n"
+        console.do_create("")
+        self.assertEqual(mock_stdout.getvalue(), expected)
+
+
+    @patch('sys.stdout', new_callable=StringIO)
+    # test if the do_show() prints the string representation of an
+    # instance based on the class name and the id
