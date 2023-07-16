@@ -157,13 +157,12 @@ class TestFileStorage_new_method(unittest.TestCase):
 
     def test_new_adds_object_to_objects_dictionary(self):
         file_storage = FileStorage()
-        base_model = BaseModel()
-        file_storage.new(base_model)
+        bm = BaseModel()
+        file_storage.new(bm)
         o_b = file_storage.all()
 
-        self.assertIn(f"{base_model.__class__.__name__}.{base_model.id}", o_b)
-        self.assertEqual(o_b[f"{base_model.__class__.__name__}.
-            {base_model.id}"], base_model)
+        self.assertIn(f"{bm.__class__.__name__}.{bm.id}", o_b)
+        self.assertEqual(o_b[f"{bm.__class__.__name__}.{bm.id}"], bm)
 
 
 class TestFileStorage_save_method(unittest.TestCase):
