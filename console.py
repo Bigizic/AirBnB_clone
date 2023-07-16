@@ -28,7 +28,7 @@ class HBNBCommand(cmd.Cmd):
               "Amenity", "Review"]
 
     def default(self, arg):
-        """Handles advanced cases
+        """Handle advanced cases
         """
         classes = {
                 "all": self.do_all,
@@ -42,7 +42,7 @@ class HBNBCommand(cmd.Cmd):
             if class_name in self.models:
                 self.do_all(class_name)
             else:
-                print("** class doesn't exist")
+                print("** class doesn't exist **")
 
     def do_quit(self, arg):
         """Quit is command to exit the program"""
