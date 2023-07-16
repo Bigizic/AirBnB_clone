@@ -140,6 +140,7 @@ class Test_file_storage_foundations(unittest.TestCase):
         self.assertEqual(key in my_store._FileStorage__objects, True)
         self.assertEqual(my_store._FileStorage__objects[key], obj)
 
+
 class TestFileStorage_all_method(unittest.TestCase):
     """all() method test case
     """
@@ -148,6 +149,7 @@ class TestFileStorage_all_method(unittest.TestCase):
         file_storage = FileStorage()
         result = file_storage.all()
         self.assertIsInstance(result, dict)
+
 
 class TestFileStorage_new_method(unittest.TestCase):
     """new() method test case
@@ -160,7 +162,8 @@ class TestFileStorage_new_method(unittest.TestCase):
         o_b = file_storage.all()
 
         self.assertIn(f"{base_model.__class__.__name__}.{base_model.id}", o_b)
-        self.assertEqual(o_b[f"{base_model.__class__.__name__}.{base_model.id}"], base_model)
+        self.assertEqual(o_b[f"{base_model.__class__.__name__}.
+            {base_model.id}"], base_model)
 
 
 class TestFileStorage_save_method(unittest.TestCase):
@@ -177,6 +180,7 @@ class TestFileStorage_save_method(unittest.TestCase):
             mock_open.assert_called_once_with(obj, 'w')
             mock_json_dump.assert_called_once()
 
+
 class TestFileStorage_reload_method(unittest.TestCase):
     """reload() method test cases
     """
@@ -189,7 +193,8 @@ class TestFileStorage_reload_method(unittest.TestCase):
 
             mock_open.return_value.__enter__.return_value = mock_file
             file_storage.reload()
-            mock_open.assert_called_once_with(file_storage._FileStorage__file_path, 'r')
+            oh = file_storage._FileStorage__file_path
+            mock_open.assert_called_once_with(oh, 'r')
             mock_json_load.assert_called_once_with(mock_file)
 
 
