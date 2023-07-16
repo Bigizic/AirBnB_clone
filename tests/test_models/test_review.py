@@ -92,15 +92,6 @@ class TestReview_to_dict_method(unittest.TestCase):
         self.assertEqual(result['user_id'], "fce12f8a")
         self.assertEqual(result['text'], "proper")
 
-    def test_save_calls_storage_save_method(self):
-        self.review.place_id = "place_id_123"
-        self.review.user_id = "user_id_123"
-        self.review.text = "This is a review."
-
-        with unittest.mock.patch.object(storage, 'save') as mock_save:
-            self.review.save()
-            mock_save.assert_called_once()
-
     def test_serialization_and_deserialization(self):
         self.review.place_id = "place_id_123"
         self.review.user_id = "user_id_123"

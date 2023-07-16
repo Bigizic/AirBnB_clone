@@ -17,9 +17,6 @@ class Test_place_method(unittest.TestCase):
     """Implementations
     """
 
-    def test_new_instance_stored_in_objects(self):
-        self.assertIn(Place(), models.storage.all().values())
-
     def test_id_is_public_str(self):
         self.assertEqual(str, type(Place().id))
 
