@@ -96,11 +96,9 @@ class TestReview_to_dict_method(unittest.TestCase):
         self.review.place_id = "place_id_123"
         self.review.user_id = "user_id_123"
         self.review.text = "This is a review."
-
         serialized_review = json.dumps(self.review.to_dict())
         deserialized_review_dict = json.loads(serialized_review)
         deserialized_review = Review(**deserialized_review_dict)
-
         self.assertEqual(deserialized_review.place_id, self.review.place_id)
         self.assertEqual(deserialized_review.user_id, self.review.user_id)
         self.assertEqual(deserialized_review.text, self.review.text)

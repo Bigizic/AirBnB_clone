@@ -64,7 +64,7 @@ class Test_place_method(unittest.TestCase):
         self.assertEqual(int, type(Place.price_by_night))
         self.assertIn("price_by_night", dir(pl))
         self.assertNotIn("price_by_night", pl.__dict__)
-        
+
     def test_latitude_is_public_class_attribute(self):
         pl = Place()
         self.assertEqual(float, type(Place.latitude))
@@ -98,7 +98,7 @@ class Test_place_method(unittest.TestCase):
     def test_args_unused(self):
         pl = Place(None)
         self.assertNotIn(None, pl.__dict__.values())
-        
+
     def test_instantiation_with_kwargs(self):
         dt = datetime.today()
         dt_iso = dt.isoformat()
