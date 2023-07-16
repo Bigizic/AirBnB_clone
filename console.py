@@ -71,7 +71,7 @@ class HBNBCommand(cmd.Cmd):
                     attr_name = args[1].strip().strip('""')
                     attr_value = args[2].strip().strip('""')
                     self.do_update(class_name + " " + my_id + " " +
-                            attr_name + " " + attr_value)
+                                   attr_name + " " + attr_value)
             else:
                 print("** class doesn't exist **")
 
