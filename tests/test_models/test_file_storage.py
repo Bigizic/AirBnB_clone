@@ -21,9 +21,11 @@ import unittest
 
 
 from models.engine.file_storage import FileStorage
+from unittest.mock import patch, MagicMock
 from models.base_model import BaseModel
 from models.amenity import Amenity
 from models.review import Review
+from unittest.mock import patch
 from models.state import State
 from models.place import Place
 from models.city import City
@@ -137,3 +139,59 @@ class Test_file_storage_foundations(unittest.TestCase):
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
         self.assertEqual(key in my_store._FileStorage__objects, True)
         self.assertEqual(my_store._FileStorage__objects[key], obj)
+
+class TestFileStorage_all_method(unittest.TestCase):
+    """all() method test case
+    """
+
+    def test_all_returns_dictionary(self):
+        file_storage = FileStorage()
+        result = file_storage.all()
+        self.assertIsInstance(result, dict)
+
+class TestFileStorage_new_method(unittest.TestCase):
+    """new() method test case
+    """
+
+    def test_new_adds_object_to_objects_dictionary(self):
+        file_storage = FileStorage()
+        base_model = BaseModel()
+        file_storage.new(base_model)
+        o_b = file_storage.all()
+
+        self.assertIn(f"{base_model.__class__.__name__}.{base_model.id}", o_b)
+        self.assertEqual(o_b[f"{base_model.__class__.__name__}.{base_model.id}"], base_model)
+
+
+class TestFileStorage_save_method(unittest.TestCase):
+    """save() method test case
+    """
+
+    def test_save_calls_json_dump(self):
+        file_storage = FileStorage()
+        with patch('builtins.open') as mock_open, \
+                patch('json.dump') as mock_json_dump:
+            file_storage.save()
+
+            obj = file_storage._FileStorage__file_path
+            mock_open.assert_called_once_with(obj, 'w')
+            mock_json_dump.assert_called_once()
+
+class TestFileStorage_reload_method(unittest.TestCase):
+    """reload() method test cases
+    """
+
+    def test_reload_calls_json_load(self):
+        file_storage = FileStorage()
+        with patch('builtins.open') as mock_open, \
+                patch('json.load') as mock_json_load:
+            mock_file = MagicMock()
+
+            mock_open.return_value.__enter__.return_value = mock_file
+            file_storage.reload()
+            mock_open.assert_called_once_with(file_storage._FileStorage__file_path, 'r')
+            mock_json_load.assert_called_once_with(mock_file)
+
+
+if __name__ == '__main_':
+    unittest.main()
