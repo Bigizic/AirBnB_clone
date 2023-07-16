@@ -38,6 +38,7 @@ class HBNBCommand(cmd.Cmd):
                 "update": self.do_update
         }
         cmd = arg.strip()
+
         if cmd.endswith(".all()"):
             class_name = cmd.split(".")[0]
             if class_name in self.models:
@@ -48,6 +49,14 @@ class HBNBCommand(cmd.Cmd):
             class_name = cmd.split(".")[0]
             if class_name in self.models:
                 self.do_count(class_name)
+            else:
+                print("** class doesn't exist **")
+        elif cmd.count("(") == 1 and cmd.endswith(")"):
+            parts = cmd.split("(")
+            class_id = parts[1][:-1].strip().strip('"')
+            class_name, obj_id = parts[0].split(".", 1)
+            if class_name in self.models:
+                self.do_show(class_name + " " + class_id)
             else:
                 print("** class doesn't exist **")
 
@@ -83,7 +92,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, arg):
         """Usage: show <class> <id> or <class>.show(<id>)
-        Prints the string representation of a class given it's class name and id
+        Prints the string representation of a class given it's class name
+        and id
         """
         args = arg.split()
 
