@@ -28,7 +28,8 @@ class HBNBCommand(cmd.Cmd):
               "Amenity", "Review"]
 
     def default(self, arg):
-        """Handle advanced cases
+        """Handle advanced cases like:
+            User.all()
         """
         classes = {
                 "all": self.do_all,
@@ -41,6 +42,12 @@ class HBNBCommand(cmd.Cmd):
             class_name = cmd.split(".")[0]
             if class_name in self.models:
                 self.do_all(class_name)
+            else:
+                print("** class doesn't exist **")
+        elif cmd.endswith(".count()"):
+            class_name = cmd.split(".")[0]
+            if class_name in self.models:
+                self.do_count(class_name)
             else:
                 print("** class doesn't exist **")
 
@@ -210,6 +217,21 @@ class HBNBCommand(cmd.Cmd):
                     storage.save()
                 else:
                     return
+
+    def do_count(self, arg):
+        """Usage: count <class> or <class>.count()
+        Prints the number of occurence of a class
+        """
+        count = 0
+        instances = storage.all()
+
+        if arg in self.models:
+            for ins in instances.values():
+                if arg == ins.__class__.__name__:
+                    count += 1
+            print(count)
+        else:
+            print("** class doesn't exist **")
 
 
 if __name__ == '__main__':
