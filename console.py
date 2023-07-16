@@ -28,8 +28,12 @@ class HBNBCommand(cmd.Cmd):
               "Amenity", "Review"]
 
     def default(self, arg):
-        """Handle advanced cases like:
-            User.all()
+        """Handle advanced cases
+            Usage:
+                <class_name>.all(): User.all(), Place.all()
+                <class_name>.count(): User.count(), BaseModel.count()
+                <class_name>.show(<id): User.show("my_id")
+                <class_name>.destroy(<id>): User.destroy("my_id")
         """
         classes = {
                 "all": self.do_all,
@@ -56,7 +60,10 @@ class HBNBCommand(cmd.Cmd):
             class_id = parts[1][:-1].strip().strip('"')
             class_name, obj_id = parts[0].split(".", 1)
             if class_name in self.models:
-                self.do_show(class_name + " " + class_id)
+                if obj_id == 'show':
+                    self.do_show(class_name + " " + class_id)
+                elif obj_id == 'destroy':
+                    self.do_destroy(class_name + " " + class_id)
             else:
                 print("** class doesn't exist **")
 
