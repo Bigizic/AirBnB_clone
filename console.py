@@ -27,6 +27,23 @@ class HBNBCommand(cmd.Cmd):
     models = ["BaseModel", "User", "Place", "State", "City",
               "Amenity", "Review"]
 
+    def default(self, arg):
+        """Handles advanced cases
+        """
+        classes = {
+                "all": self.do_all,
+                "show": self.do_show,
+                "destroy": self.do_destroy,
+                "update": self.do_update
+        }
+        cmd = arg.strip()
+        if cmd.endswith(".all()"):
+            class_name = cmd.split(".")[0]
+            if class_name in self.models:
+                self.do_all(class_name)
+            else:
+                print("** class doesn't exist")
+
     def do_quit(self, arg):
         """Quit is command to exit the program"""
         return True
@@ -40,7 +57,8 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """Creates a new instance of BaseModel
+        """Usage: create <class>
+        Creates a new class instance and prints it's id.
         """
         if arg:
             if arg in self.models:
@@ -57,8 +75,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
 
     def do_show(self, arg):
-        """Prints the string representation of an insance based
-            on the class name and id
+        """Usage: show <class> <id> or <class>.show(<id>)
+        Prints the string representation of a class given it's class name and id
         """
         args = arg.split()
 
@@ -86,8 +104,8 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
 
     def do_destroy(self, arg):
-        """Deletes an instance based on the class name and id, Also
-            saves the changes into the JSON file
+        """Usage: destroy <class> <id> or <class>.destroy(<id>)
+        Deletes an instance based on the class name and id
         """
         args = arg.split()
 
@@ -117,28 +135,28 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
 
     def do_all(self, arg):
-        """Prints all string representation of all instances based
-            or not on the class name example: all BaseModel or all
+        """Usage: all or all <class> or <class>.all()
+        Prints all string representation of all instances given class or not
         """
         instances = storage.all()
         output = []
+
         if len(arg) == 0:
             for instance in instances.values():
                 output.append(str(instance))
             print(json.dumps(output))
-        elif arg in self.models:
-            for instance in instances.values():
-                if arg == instance.__class__.__name__:
-                    output.append(str(instance))
-            print(json.dumps(output))
-        else:
-            print("** class doesn't exist **")
+        if len(arg) > 0:
+            if arg in self.models:
+                for instance in instances.values():
+                    if arg == instance.__class__.__name__:
+                        output.append(str(instance))
+                print(json.dumps(output))
+            else:
+                print("** class doesn't exist **")
 
     def do_update(self, arg):
-        """Updates an instance based on the class name and id by
-            adding or updating attribute example:
-            update BaseModel 1234-1234-1234 email "aibnb@mail.com".
-            Usage: <class name> <id> <attribute name> <attribute value>
+        """Usage: update <class> <id> <attribute> <value>
+        Updates an instance based on the class, id, attribute and value
         """
         args = arg.split()
         instances = storage.all()
