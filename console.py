@@ -34,6 +34,7 @@ class HBNBCommand(cmd.Cmd):
                 <class_name>.count(): User.count(), BaseModel.count()
                 <class_name>.show(<id): User.show("my_id")
                 <class_name>.destroy(<id>): User.destroy("my_id")
+                <class_name>.update(<id>, <att_name>, <att_value>)
         """
         classes = {
                 "all": self.do_all,
@@ -58,12 +59,19 @@ class HBNBCommand(cmd.Cmd):
         elif cmd.count("(") == 1 and cmd.endswith(")"):
             parts = cmd.split("(")
             class_id = parts[1][:-1].strip().strip('"')
-            class_name, obj_id = parts[0].split(".", 1)
+            class_name, cmd_funcs = parts[0].split(".", 1)
             if class_name in self.models:
-                if obj_id == 'show':
+                if cmd_funcs == 'show':
                     self.do_show(class_name + " " + class_id)
-                elif obj_id == 'destroy':
+                elif cmd_funcs == 'destroy':
                     self.do_destroy(class_name + " " + class_id)
+                elif cmd_funcs == 'update':
+                    args = class_id.split(",", 2)
+                    my_id = args[0].strip().strip('""')
+                    attr_name = args[1].strip().strip('""')
+                    attr_value = args[2].strip().strip('""')
+                    self.do_update(class_name + " " + my_id + " " +
+                            attr_name + " " + attr_value)
             else:
                 print("** class doesn't exist **")
 
