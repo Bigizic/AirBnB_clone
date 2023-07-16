@@ -23,7 +23,7 @@ class TestCity_method(unittest.TestCase):
 
     def test_city_inherits_from_base_model(self):
         self.assertIsInstance(self.city, BaseModel)
-        
+
     def test_city_attributes_exist(self):
         self.assertTrue(hasattr(self.city, 'state_id'))
         self.assertTrue(hasattr(self.city, 'name'))
@@ -47,7 +47,7 @@ class TestCity_method(unittest.TestCase):
 
     def test_first_name_is_public_str(self):
         self.assertEqual(str, type(City.name))
-        
+
     def test_id_is_public_str(self):
         self.assertEqual(str, type(City().id))
 
@@ -73,7 +73,7 @@ class TestCity_to_dict_method(unittest.TestCase):
         self.city = City()
         self.city.state_id = "test@example.com"
         self.city.name = "password123"
-        
+
     def test_to_dict_returns_dictionary(self):
         result = self.city.to_dict()
         self.assertIsInstance(result, dict)
@@ -89,7 +89,6 @@ class TestCity_to_dict_method(unittest.TestCase):
 
     def test_to_dict_attribute_values_are_correct(self):
         result = self.city.to_dict()
-        
         self.assertEqual(result['state_id'], "test@example.com")
         self.assertEqual(result['name'], "password123")
 
