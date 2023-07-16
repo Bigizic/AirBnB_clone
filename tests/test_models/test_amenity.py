@@ -79,7 +79,7 @@ class TestAmenity_to_dict_method(unittest.TestCase):
 
     def test_to_dict_attribute_values_are_correct(self):
         result = self.am.to_dict()
-        
+
         self.assertEqual(result['name'], "isaac")
 
 

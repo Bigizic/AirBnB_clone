@@ -143,6 +143,7 @@ class Test_base_model_foundations(unittest.TestCase):
         # check if args has the atribute name
         self.assertFalse(hasattr(my_args, 'name'))
 
+
 class TestBaseModel_save_method(unittest.TestCase):
     """Unittest for the save method of BaseModel class
     """
@@ -160,6 +161,7 @@ class TestBaseModel_save_method(unittest.TestCase):
         models.storage = storage
         base_model.save()
         storage.save.assert_called_once()
+
 
 class TestBaseModel_to_dict_method(unittest.TestCase):
     """This are test for the to_dict() method in the BaseModel class
@@ -198,6 +200,7 @@ class TestBaseModel_to_dict_method(unittest.TestCase):
         self.assertIn('number', obj_dict)
         self.assertEqual(base_model.name, obj_dict['name'])
         self.assertEqual(base_model.number, obj_dict['number'])
+
 
 class TestBaseModel_str_method(unittest.TestCase):
     """This test cases are for the __str__ method
