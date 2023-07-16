@@ -33,13 +33,13 @@ class TestAmenity_method(unittest.TestCase):
     def test_amenity_attributes_can_be_assigned(self):
         self.am.name = "john"
         self.assertEqual(self.am.name, "john")
-        
+
     def test_updated_at_is_public_datetime(self):
         self.assertEqual(datetime, type(Amenity().updated_at))
 
     def test_last_name_is_public_str(self):
         self.assertEqual(str, type(Amenity.name))
-        
+
     def test_id_is_public_str(self):
         self.assertEqual(str, type(Amenity().id))
 
@@ -71,12 +71,12 @@ class TestAmenity_to_dict_method(unittest.TestCase):
 
     def test_to_dict_contains_expected_attributes(self):
         result = self.am.to_dict()
-        
+
         self.assertIn('id', result)
         self.assertIn('created_at', result)
         self.assertIn('updated_at', result)
         self.assertIn('name', result)
-        
+
     def test_to_dict_attribute_values_are_correct(self):
         result = self.am.to_dict()
         
