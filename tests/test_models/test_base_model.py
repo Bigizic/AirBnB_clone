@@ -14,12 +14,38 @@ import unittest
 
 
 from models.base_model import BaseModel
-from datetime import datetime
+from datetime import datetime, timedelta
+from unittest.mock import MagicMock
+from time import sleep
+import time
+import models
 
 
 class Test_base_model_foundations(unittest.TestCase):
     """Foundations test i.e easier tests cases
     """
+
+    # tes when no argument is passed to BaseModel
+    def test_no_args(self):
+        self.assertEqual(BaseModel, type(BaseModel()))
+
+    # test two models unique id not the same
+    def test_two_unique_id(self):
+        model_1 = BaseModel()
+        model_2 = BaseModel()
+        self.assertNotEqual(model_1.id, model_2.id)
+
+    # test different instance of same model different updated_at
+    def test_different_updated_at_same_model(self):
+        model_1 = BaseModel()
+        sleep(0.05)
+        model_2 = BaseModel()
+        self.assertLess(model_1.updated_at, model_2.updated_at)
+
+    # test argument unused
+    def test_args_unused(self):
+        model = BaseModel(None)
+        self.assertNotIn(None, model.__dict__.values())
 
     # test if the id is of str (string) type
     def test_valid_id_type(self):
@@ -116,3 +142,78 @@ class Test_base_model_foundations(unittest.TestCase):
         self.assertNotEqual(my_args.updated_at, 'TTy')
         # check if args has the atribute name
         self.assertFalse(hasattr(my_args, 'name'))
+
+class TestBaseModel_save_method(unittest.TestCase):
+    """Unittest for the save method of BaseModel class
+    """
+    def test_save_updates_updated_at(self):
+        model = BaseModel()
+        initial_updated_at = model.updated_at
+        time.sleep(1)
+        model.save()
+        new_updated_at = model.updated_at
+        self.assertGreater(new_updated_at, initial_updated_at)
+
+    def test_save_calls_storage_save(self):
+        base_model = BaseModel()
+        storage = MagicMock()
+        models.storage = storage
+        base_model.save()
+        storage.save.assert_called_once()
+
+class TestBaseModel_to_dict_method(unittest.TestCase):
+    """This are test for the to_dict() method in the BaseModel class
+    """
+
+    def test_to_dict_returns_dictionary(self):
+        base_model = BaseModel()
+        obj_dict = base_model.to_dict()
+        self.assertIsInstance(obj_dict, dict)
+
+    def test_to_dict_contains_correct_attributes(self):
+        base_model = BaseModel()
+        obj_dict = base_model.to_dict()
+        self.assertIn('id', obj_dict)
+        self.assertIn('created_at', obj_dict)
+        self.assertIn('updated_at', obj_dict)
+        self.assertIn('__class__', obj_dict)
+
+    def test_to_dict_attributes_are_correct(self):
+        base_model = BaseModel()
+        obj_dict = base_model.to_dict()
+        self.assertEqual(base_model.id, obj_dict['id'])
+        bm1 = base_model.created_at.isoformat()
+        self.assertEqual(bm1, obj_dict['created_at'])
+        bm2 = base_model.updated_at.isoformat()
+        self.assertEqual(bm2, obj_dict['updated_at'])
+        self.assertEqual(base_model.__class__.__name__, obj_dict['__class__'])
+
+    def test_to_dict_handles_additional_attributes(self):
+        base_model = BaseModel()
+        base_model.name = 'Example'
+        base_model.number = 123
+
+        obj_dict = base_model.to_dict()
+        self.assertIn('name', obj_dict)
+        self.assertIn('number', obj_dict)
+        self.assertEqual(base_model.name, obj_dict['name'])
+        self.assertEqual(base_model.number, obj_dict['number'])
+
+class TestBaseModel_str_method(unittest.TestCase):
+    """This test cases are for the __str__ method
+    """
+
+    def test_str_contains_attributes(self):
+        base_model = BaseModel()
+        base_model.name = 'Example'
+        base_model.number = 123
+
+        result = str(base_model)
+        self.assertIn('name', result)
+        self.assertIn(base_model.name, result)
+        self.assertIn('number', result)
+        self.assertIn(str(base_model.number), result)
+
+
+if __name__ == "__main__":
+    unittest.main()
