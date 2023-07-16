@@ -23,7 +23,7 @@ class TestUser_method(unittest.TestCase):
 
     def test_user_inherits_from_base_model(self):
         self.assertIsInstance(self.user, BaseModel)
-        
+
     def test_user_attributes_exist(self):
         self.assertTrue(hasattr(self.user, 'email'))
         self.assertTrue(hasattr(self.user, 'password'))
@@ -89,7 +89,7 @@ class TestUser_to_dict_method(unittest.TestCase):
 
     def test_to_dict_returns_dictionary(self):
         # Call the to_dict() method
-        result = self.user.to_dict()        
+        result = self.user.to_dict()
         self.assertIsInstance(result, dict)
 
     def test_to_dict_contains_expected_attributes(self):
@@ -105,7 +105,7 @@ class TestUser_to_dict_method(unittest.TestCase):
 
     def test_to_dict_attribute_values_are_correct(self):
         result = self.user.to_dict()
-        
+
         self.assertEqual(result['email'], "test@example.com")
         self.assertEqual(result['password'], "password123")
         self.assertEqual(result['first_name'], "John")
