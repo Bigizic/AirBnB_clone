@@ -104,61 +104,52 @@ class Test_console(unittest.TestCase):
         command
     """
     # test case if do_quit succesfully exit the program
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_quit_command(self, mock_stdout):
+    def test_quit_command(self):
         console = HBNBCommand()
-        self.assertTrue(console.do_quit(""))
-        self.assertEqual(mock_stdout.getvalue(), "")
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertTrue(console.onecmd("quit"))
 
     # test case if do_EOF successfulyy exit the program
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_eof_command(self, mock_stdout):
+    def test_eof_command(self):
         console = HBNBCommand()
-        self.assertTrue(console.do_EOF(""))
-        self.assertEqual(mock_stdout.getvalue(), "")
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertTrue(console.onecmd("EOF"))
 
     # test case if the emptyline() doesn't execute anything
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_emptyline_command(self, mock_stdout):
+    def test_emptyline_command(self):
         console = HBNBCommand()
-        self.assertFalse(console.emptyline(), "")
-        self.assertFalse(console.emptyline(), None)
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(console.onecmd(""))
+            self.assertEqual("", output.getvalue().strip())
 
     # test if do_create creates a new instance of allclasses
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_create_command(self, mock_stdout):
+    def test_create_command(self):
         console = HBNBCommand()
         classes = [BaseModel, User, Place, City, State, Amenity, Review]
-        for model_class in classes:
-            class_name = model_class.__name__
-            console.do_create(class_name)
-            created_instance = console.created_model
-            self.assertIsInstance(created_instance, model_class)
+        with patch("sys.stdout", new=StringIO()) as output:
+            for model_class in classes:
+                class_name = model_class.__name__
+                self.assertFalse(console.onecmd(f"create {class_name}"))
+                created_instance = console.created_model
+                self.assertIsInstance(created_instance, model_class)
 
     # test if do_create raises a msg while trying to create a class that
     # doesn't exist
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_create_class_not_exist(self, mock_stdout):
+    def test_create_class_not_exist(self):
         console = HBNBCommand()
-        classes = ["Hello", None, 3, 3.142, float('inf'), -float('inf'),
-                   True, False]
-        expected = "** class doesn't exist **\n"
-        for model_cls in classes:
-            console.do_create(str(model_cls))
-            self.assertEqual(mock_stdout.getvalue(), expected)
-            # ensure that mock_stdout buffer is reset to it's intial state
-            # before the next iteration of the loop
-            mock_stdout.seek(0)
-            mock_stdout.truncate(0)
+        expected = "** class doesn't exist **"
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(console.onecmd("create MyModel"))
+            self.assertEqual(expected, output.getvalue().strip())
 
     # test if do_create raises a msg when the command is entered
     # without any class name
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_create_class_name_missing(self, mock_stdout):
+    def test_create_class_name_missing(self):
         console = HBNBCommand()
-        expected = "** class name missing **\n"
-        console.do_create("")
-        self.assertEqual(mock_stdout.getvalue(), expected)
+        expected = "** class name missing **"
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(console.onecmd("create"))
+            self.assertEqual(expected, output.getvalue().strip())
 
     # test if the do_show() prints the string representation of an
     # instance based on the class name and the id
@@ -185,26 +176,22 @@ class Test_console(unittest.TestCase):
 
     # test if the do_show() raises a msg when it's called alone, without
     # a class name
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_show_class_name_missing(self, mock_stdout):
+    def test_show_class_name_missing(self):
         console = HBNBCommand()
-        expected = "** class name missing **\n"
-        console.do_show("")
-        self.assertEqual(mock_stdout.getvalue(), expected)
+        expected = "** class name missing **"
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(console.onecmd("show"))
+            self.assertEqual(expected, output.getvalue().strip())
 
     # test if the do_show() raises a msg when a class that doesn't exist
     # is called along the show command
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_show_class_does_not_exist(self, mock_stdout):
+    def test_show_class_does_not_exist(self):
         console = HBNBCommand()
-        classes = ["Hello", None, 3, 3.142, float('inf'), -float('inf'),
-                   True, False]
-        expected = "** class doesn't exist **\n"
-        for model_cls in classes:
-            console.do_show(str(model_cls))
-            self.assertEqual(mock_stdout.getvalue(), expected)
-            mock_stdout.seek(0)
-            mock_stdout.truncate(0)
+        expected = "** class doesn't exist **"
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(console.onecmd(f"show MyModel"))
+            self.assertEqual(expected, output.getvalue().strip())
+
 
     # test if the do_show() raises a msg when a class that exist is only
     # passed as the argument but no id

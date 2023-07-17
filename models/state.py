@@ -7,6 +7,10 @@ class State(BaseModel):
     """Represent the state class
     Attributes:
     name (string): empty string(name of the state).
+    Raises:
+    None
+    Return:
+    Void
     """
 
     name = ""
