@@ -448,3 +448,127 @@ Update your command interpreter (console.py) to allow those actions: show, creat
 Enjoy your first console!
 
 No unittests needed for the console
+
+
+# ADVANCED TASKS:
+
+
+## 11. All instances by class name:
+
+Update your command interpreter (console.py) to retrieve all instances of a class by using: <class name>.all().
+
+terminal:
+
+	guillaume@ubuntu:~/AirBnB$ ./console.py
+	(hbnb) User.all()
+	[[User] (246c227a-d5c1-403d-9bc7-6a47bb9f0f68) {'first_name': 'Betty', 'last_name': 'Bar', 'created_at': datetime.datetime(2017, 9, 28, 21, 12, 19, 611352), 'updated_at': datetime.datetime(2017, 9, 28, 21, 12, 19, 611363), 'password': '63a9f0ea7bb98050796b649e85481845', 'email': 'airbnb@mail.com', 'id': '246c227a-d5c1-403d-9bc7-6a47bb9f0f68'}, [User] (38f22813-2753-4d42-b37c-57a17f1e4f88) {'first_name': 'Betty', 'last_name': 'Bar', 'created_at': datetime.datetime(2017, 9, 28, 21, 11, 42, 848279), 'updated_at': datetime.datetime(2017, 9, 28, 21, 11, 42, 848291), 'password': 'b9be11166d72e9e3ae7fd407165e4bd2', 'email': 'airbnb@mail.com', 'id': '38f22813-2753-4d42-b37c-57a17f1e4f88'}]
+(hbnb) 
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## 12. Count instances:
+
+Update your command interpreter (console.py) to retrieve the number of instances of a class: <class name>.count().
+
+terminal:
+
+	guillaume@ubuntu:~/AirBnB$ ./console.py
+	(hbnb) User.count()
+	2
+	(hbnb) 
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## 13. Show:
+
+Update your command interpreter (console.py) to retrieve an instance based on its ID: <class name>.show(<id>).
+
+Errors management must be the same as previously.
+
+	guillaume@ubuntu:~/AirBnB$ ./console.py
+	(hbnb) User.show("246c227a-d5c1-403d-9bc7-6a47bb9f0f68")
+	[User] (246c227a-d5c1-403d-9bc7-6a47bb9f0f68) {'first_name': 'Betty', 'last_name': 'Bar', 'created_at': datetime.datetime(2017, 9, 28, 21, 12, 19, 611352), 'updated_at': datetime.datetime(2017, 9, 28, 21, 12, 19, 611363), 'password': '63a9f0ea7bb98050796b649e85481845', 'email': 'airbnb@mail.com', 'id': '246c227a-d5c1-403d-9bc7-6a47bb9f0f68'}
+	(hbnb) User.show("Bar")
+	** no instance found **
+	(hbnb)
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+## 14. Destroy:
+
+Update your command interpreter (console.py) to destroy an instance based on his ID: <class name>.destroy(<id>).
+
+Errors management must be the same as previously.
+
+	guillaume@ubuntu:~/AirBnB$ ./console.py
+	(hbnb) User.count()
+	2
+	(hbnb) User.destroy("246c227a-d5c1-403d-9bc7-6a47bb9f0f68")
+	(hbnb) User.count()
+	1
+	(hbnb) User.destroy("Bar")
+	** no instance found **
+	(hbnb) 
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+## 15. Update:
+
+Update your command interpreter (console.py) to update an instance based on his ID: <class name>.update(<id>, <attribute name>, <attribute value>).
+
+Errors management must be the same as previously.
+
+	guillaume@ubuntu:~/AirBnB$ ./console.py
+	(hbnb) User.show("38f22813-2753-4d42-b37c-57a17f1e4f88")
+	[User] (38f22813-2753-4d42-b37c-57a17f1e4f88) {'first_name': 'Betty', 'last_name': 'Bar', 'created_at': datetime.datetime(2017, 9, 28, 21, 11, 42, 848279), 'updated_at': datetime.datetime(2017, 9, 28, 21, 11, 42, 848291), 'password': 'b9be11166d72e9e3ae7fd407165e4bd2', 'email': 'airbnb@mail.com', 'id': '38f22813-2753-4d42-b37c-57a17f1e4f88'}
+	(hbnb)
+	(hbnb) User.update("38f22813-2753-4d42-b37c-57a17f1e4f88", "first_name", "John")
+	(hbnb) User.update("38f22813-2753-4d42-b37c-57a17f1e4f88", "age", 89)
+	(hbnb)
+	(hbnb) User.show("38f22813-2753-4d42-b37c-57a17f1e4f88")
+	[User] (38f22813-2753-4d42-b37c-57a17f1e4f88) {'age': 89, 'first_name': 'John', 'last_name': 'Bar', 'created_at': datetime.datetime(2017, 9, 28, 21, 11, 42, 848279), 'updated_at': datetime.datetime(2017, 9, 28, 21, 15, 32, 299055), 'password': 'b9be11166d72e9e3ae7fd407165e4bd2', 'email': 'airbnb@mail.com', 'id': '38f22813-2753-4d42-b37c-57a17f1e4f88'}
+	(hbnb) 
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## 16. Update from dictionary:
+
+
+Update your command interpreter (console.py) to update an instance based on his ID with a dictionary: <class name>.update(<id>, <dictionary representation>).
+
+Errors management must be the same as previously.
+
+	guillaume@ubuntu:~/AirBnB$ ./console.py
+	(hbnb) User.show("38f22813-2753-4d42-b37c-57a17f1e4f88")
+	[User] (38f22813-2753-4d42-b37c-57a17f1e4f88) {'age': 23, 'first_name': 'Bob', 'last_name': 'Bar', 'created_at': datetime.datetime(2017, 9, 28, 21, 11, 42, 848279), 'updated_at': datetime.datetime(2017, 9, 28, 21, 15, 32, 299055), 'password': 'b9be11166d72e9e3ae7fd407165e4bd2', 'email': 'airbnb@mail.com', 'id': '38f22813-2753-4d42-b37c-57a17f1e4f88'}
+	(hbnb) 
+	(hbnb) User.update("38f22813-2753-4d42-b37c-57a17f1e4f88", {'first_name': "John", "age": 89})
+	(hbnb) 
+	(hbnb) User.show("38f22813-2753-4d42-b37c-57a17f1e4f88")
+	[User] (38f22813-2753-4d42-b37c-57a17f1e4f88) {'age': 89, 'first_name': 'John', 'last_name': 'Bar', 'created_at': datetime.datetime(2017, 9, 28, 21, 11, 42, 848279), 'updated_at': datetime.datetime(2017, 9, 28, 21, 17, 10, 788143), 'password': 'b9be11166d72e9e3ae7fd407165e4bd2', 'email': 'airbnb@mail.com', 'id': '38f22813-2753-4d42-b37c-57a17f1e4f88'}
+	(hbnb) 
+	
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## 17. Unittests for the Console!
+
+Write all unittests for console.py, all features!
+
+For testing the console, you should “intercept” STDOUT of it, we highly recommend you to use:
+
+	with patch('sys.stdout', new=StringIO()) as f:
+	    HBNBCommand().onecmd("help show")
