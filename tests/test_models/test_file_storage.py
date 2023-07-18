@@ -41,6 +41,7 @@ class Test_file_storage_foundations(unittest.TestCase):
     # test if the file being created is a .json file
     def test_correct_file_extension(self):
         m_s = FileStorage()
+        m_s.save()
         self.assertEqual(m_s._FileStorage__file_path.endswith('.json'), True)
 
     # test if the new() method returns the objects in the correct format
@@ -51,6 +52,11 @@ class Test_file_storage_foundations(unittest.TestCase):
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
         self.assertEqual(key in my_store._FileStorage__objects, True)
         self.assertEqual(my_store._FileStorage__objects[key], obj)
+
+    def test_file_path_attribute_is_none(self):
+        file_storage = FileStorage()
+        file_path = file_storage._FileStorage__file_path
+        self.assertIsNone(file_path)
 
     # test if the save() serialzies the objects and saves it to the json
     # file path
