@@ -39,13 +39,13 @@ class TestReview_method(unittest.TestCase):
         self.assertIn("__class__", result)
 
     def test_to_dict_attribute_values_are_correct(self):
-        self.review.place_id = "place_id_123"
-        self.review.user_id = "user_id_123"
+        self.review.place_id = "234567"
+        self.review.user_id = "234567"
         self.review.text = "This is a review."
 
         result = self.review.to_dict()
-        self.assertEqual(result['place_id'], "place_id_123")
-        self.assertEqual(result['user_id'], "user_id_123")
+        self.assertEqual(result['place_id'], "234567")
+        self.assertEqual(result['user_id'], "234567")
         self.assertEqual(result['text'], "This is a review.")
 
 
@@ -122,8 +122,8 @@ class TestReview_to_dict_method(unittest.TestCase):
         self.assertEqual(result['text'], "proper")
 
     def test_serialization_and_deserialization(self):
-        self.review.place_id = "place_id_123"
-        self.review.user_id = "user_id_123"
+        self.review.place_id = "2345667"
+        self.review.user_id = "234567"
         self.review.text = "This is a review."
         serialized_review = json.dumps(self.review.to_dict())
         deserialized_review_dict = json.loads(serialized_review)
