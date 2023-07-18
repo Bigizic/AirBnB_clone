@@ -115,6 +115,14 @@ class Test_console(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertTrue(console.onecmd("EOF"))
 
+    def test_help(self):
+        h = ("Documented commands (type help <topic>):\n"
+            "========================================\n"
+            "EOF  all  count  create  destroy  help  quit  show  update")
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("help"))
+            self.assertEqual(h, output.getvalue().strip())
+
     # test case if the emptyline() doesn't execute anything
     def test_emptyline_command(self):
         console = HBNBCommand()
