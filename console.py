@@ -66,7 +66,7 @@ class HBNBCommand(cmd.Cmd):
             if class_name in self.models:
                 self.do_all(class_name)
             else:
-                print("** class doesn't exist **")
+                self.do_all(class_name)
         elif cmd.endswith(".count()"):
             class_name = cmd.split(".")[0]
             if class_name in self.models:
@@ -80,15 +80,19 @@ class HBNBCommand(cmd.Cmd):
             if class_name in self.models:
                 if cmd_funcs == 'show':
                     self.do_show(class_name + " " + class_id)
-                elif cmd_funcs == 'destroy':
+
+                if cmd_funcs == 'destroy' and class_id:
                     self.do_destroy(class_name + " " + class_id)
-                elif cmd_funcs == 'update' and not important:
+
+                if cmd_funcs == 'update' and not important:
                     args = class_id.split(",", 2)
                     my_id = args[0].strip().strip('""')
                     attr_name = args[1].strip().strip('""')
                     attr_value = args[2].strip().strip('""')
                     self.do_update(class_name + " " + my_id + " " +
                                    attr_name + " " + attr_value)
+            elif not class_name and  cmd_funcs:
+                print("** class name missing **")
             else:
                 print("** class doesn't exist **")
 
@@ -130,6 +134,10 @@ class HBNBCommand(cmd.Cmd):
 
         if len(args) == 0:
             print("** class name missing **")
+
+        elif args[0] == '.show()':
+            print("** class name missing **")
+            return
 
         elif args[0] not in self.models:
             print("** class doesn't exist **")
@@ -197,14 +205,15 @@ class HBNBCommand(cmd.Cmd):
             for instance in instances.values():
                 output.append(str(instance))
             print(json.dumps(output))
-        if len(arg) > 0:
-            if arg in self.models:
-                for instance in instances.values():
-                    if arg == instance.__class__.__name__:
-                        output.append(str(instance))
-                print(json.dumps(output))
-            else:
-                print("** class doesn't exist **")
+        elif arg in self.models:
+            for instance in instances.values():
+                if arg == instance.__class__.__name__:
+                    output.append(str(instance))
+            print(json.dumps(output))
+        elif not arg:
+            print(json.dumps(output))
+        else:
+            print("** class doesn't exist **")
 
     def do_update(self, arg):
         """Usage: update <class> <id> <attribute> <value>
