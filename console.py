@@ -55,7 +55,8 @@ class HBNBCommand(cmd.Cmd):
             if cmd_funcs == 'update':
                 att = eval(att_str)
                 if type(att) is dict:
-                    for keys, values in att.items():
+                    for keys, value in att.items():
+                        values = str(value)
                         self.do_update(class_name + " " + my_id + " " + keys + " " + values)
                         important = True
 
