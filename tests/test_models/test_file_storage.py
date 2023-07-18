@@ -151,6 +151,11 @@ class TestFileStorage_all_method(unittest.TestCase):
         result = file_storage.all()
         self.assertIsInstance(result, dict)
 
+    def test_all_method_returns_empty_dict(self):
+        file_storage = FileStorage()
+        result = file_storage.all()
+        self.assertEqual(result, {})
+
 
 class TestFileStorage_new_method(unittest.TestCase):
     """new() method test case
