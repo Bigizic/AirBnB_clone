@@ -32,7 +32,7 @@ class FileStorage:
     def all(self):
         """Returns all objects
         """
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
         """Creates the key for the dict and sets in __objects the obj
@@ -40,7 +40,7 @@ class FileStorage:
         """
         if obj:
             key = f"{obj.__class__.__name__}.{obj.id}"
-            FileStorage.__objects[key] = obj
+            self.__objects[key] = obj
         else:
             return {}
 
@@ -49,7 +49,7 @@ class FileStorage:
         """
         with open(self.__file_path, "w") as open_file:
             data = {key: obj.to_dict() for key, obj in
-                    FileStorage.__objects.items()}
+                    self.__objects.items()}
             json.dump(data, open_file)
 
     def reload(self):
@@ -60,6 +60,6 @@ class FileStorage:
                 data = json.load(open_file)
                 for key, val in data.items():
                     val = eval(val["__class__"])(**val)
-                    FileStorage.__objects[key] = val
+                    self.__objects[key] = val
         except Exception:
             pass
