@@ -124,8 +124,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, arg):
         """Usage: show <class> <id> or <class>.show(<id>)
-        Prints the string representation of a class given it's class name
-        and id
+        Prints the string rep of a class given it's class name and id
         """
         args = arg.split()
 
@@ -189,7 +188,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """Usage: all or all <class> or <class>.all()
-        Prints all string representation of all instances given class or not
+        Prints all string rep of all instances given class or not
         """
         instances = storage.all()
         output = []
