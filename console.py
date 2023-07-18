@@ -122,14 +122,16 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
 
         else:
+            cls_n = args[0]
             input_id = args[1]
             instances = storage.all()
 
             found_instance = None
-            for instance_dict in instances.values():
-                if input_id == getattr(instance_dict, 'id', None):
-                    found_instance = instance_dict
-                    break
+            for ins_dict in instances.values():
+                if cls_n == getattr(ins_dict.__class__, '__name__', None):
+                    if input_id == getattr(ins_dict, 'id', None):
+                        found_instance = ins_dict
+                        break
             if found_instance:
                 print(found_instance)
             else:
