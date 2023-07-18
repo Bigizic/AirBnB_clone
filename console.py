@@ -93,8 +93,8 @@ class HBNBCommand(cmd.Cmd):
                         self.do_update(class_name + " " + my_id + " " +
                                        attr_name + " " + attr_value)
                     else:
-                       print("** instance id missing **") 
-            elif not class_name and  cmd_funcs:
+                        print("** instance id missing **") 
+            elif not class_name and cmd_funcs:
                 print("** class name missing **")
             else:
                 print("** class doesn't exist **")
