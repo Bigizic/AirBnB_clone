@@ -57,7 +57,8 @@ class HBNBCommand(cmd.Cmd):
                 if type(att) is dict:
                     for keys, value in att.items():
                         values = str(value)
-                        self.do_update(class_name + " " + my_id + " " + keys + " " + values)
+                        self.do_update(class_name + " " + my_id + " " +
+                                       keys + " " + values)
                         important = True
 
         if cmd.endswith(".all()"):
