@@ -67,20 +67,22 @@ class TestReviewAttributes(unittest.TestCase):
     """
 
     def test_attributes_are_none(self):
-        review = Review()
-        if review.place_id is None:
-            self.assertIsNone(review.place_id)
-        else:
-            self.assertIsNotNone(review.place_id)
-        if review.user_id is None:
-            self.assertIsNone(review.user_id)
-        else:
-            self.assertIsNotNone(review.user_id)
-        if review.text is None:
-            self.assertIsNone(review.text)
-        else:
-            self.assertIsNotNone(review.text)
+        with self.assertRaises(TypeError):
+            Review(id=None, created_at=None, updated_at=None)
 
+    def test_args_unused(self):
+        rv = Review(None)
+        self.assertNotIn(None, rv.__dict__.values())
+
+    def test_save_with_arg(self):
+        rv = Review()
+        with self.assertRaises(TypeError):
+            rv.save(None)
+
+    def test_to_dict_with_arg(self):
+        rv = Review()
+        with self.assertRaises(TypeError):
+            rv.to_dict(None)
 
 class TestReview_to_dict_method(unittest.TestCase):
     """Unittests for testing to_dict() for the class Review
