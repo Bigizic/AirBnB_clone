@@ -242,6 +242,8 @@ class HBNBCommand(cmd.Cmd):
                     storage.save()
                 else:
                     return
+            else:
+                print("** no instance found **")
 
     def do_count(self, arg):
         """Usage: count <class> or <class>.count()
