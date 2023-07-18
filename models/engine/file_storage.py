@@ -41,6 +41,8 @@ class FileStorage:
         if obj:
             key = f"{obj.__class__.__name__}.{obj.id}"
             FileStorage.__objects[key] = obj
+        else:
+            return {}
 
     def save(self):
         """Serializes the __objects to the JSON file path
