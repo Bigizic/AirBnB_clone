@@ -43,7 +43,8 @@ class HBNBCommand(cmd.Cmd):
                 "update": self.do_update
         }
         cmd = arg.strip()
-        
+
+        important = None
         if cmd.count("{") == 1 and cmd.endswith(")"):
             parts = cmd.split("(")
             spli = parts[1][:-1].strip().strip('"')
@@ -56,7 +57,7 @@ class HBNBCommand(cmd.Cmd):
                 if type(att) is dict:
                     for keys, values in att.items():
                         self.do_update(class_name + " " + my_id + " " + keys + " " + values)
-
+                        important = True
 
         if cmd.endswith(".all()"):
             class_name = cmd.split(".")[0]
@@ -79,7 +80,7 @@ class HBNBCommand(cmd.Cmd):
                     self.do_show(class_name + " " + class_id)
                 elif cmd_funcs == 'destroy':
                     self.do_destroy(class_name + " " + class_id)
-                elif cmd_funcs == 'update':
+                elif cmd_funcs == 'update' and not important:
                     args = class_id.split(",", 2)
                     my_id = args[0].strip().strip('""')
                     attr_name = args[1].strip().strip('""')
@@ -248,20 +249,22 @@ class HBNBCommand(cmd.Cmd):
             except NameError:
                 print("** value missing **")
                 return False
+        class_name = args[0]
+        instance_id = args[1]
         attr_name = args[2]
         attr_value = args[3].strip("\"'")
 
-        if len(args) >= 4:
-            ins_key = "{}.{}".format(args[0], args[1])
-            if ins_key in instances:
-                ins = instances[ins_key]
-                if attr_name not in ['id', 'created_at', 'updated_at']:
-                    setattr(ins, attr_name, attr_value)
-                    storage.save()
-                else:
-                    return
-            else:
-                print("** no instance found **")
+        ins_key = "{}.{}".format(class_name, instance_id)
+        if ins_key not in instances:
+            print("** no instance found **")
+            return False
+
+        ins = instances[ins_key]
+        if attr_name in ['id', 'created_at', 'updated_at']:
+            return False
+
+        setattr(ins, attr_name, attr_value)
+        storage.save()
 
     def do_count(self, arg):
         """Usage: count <class> or <class>.count()
