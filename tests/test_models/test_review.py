@@ -84,6 +84,13 @@ class TestReviewAttributes(unittest.TestCase):
         with self.assertRaises(TypeError):
             rv.to_dict(None)
 
+    def test_attributes_all_none(self):
+        rv = Review()
+        with self.assertRaises(TypeError):
+            rv.place_id(None)
+            rv.user_id(None)
+            rv.text(None)
+
 class TestReview_to_dict_method(unittest.TestCase):
     """Unittests for testing to_dict() for the class Review
     """
