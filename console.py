@@ -43,6 +43,20 @@ class HBNBCommand(cmd.Cmd):
                 "update": self.do_update
         }
         cmd = arg.strip()
+        
+        if cmd.count("{") == 1 and cmd.endswith(")"):
+            parts = cmd.split("(")
+            spli = parts[1][:-1].strip().strip('"')
+            class_name, cmd_funcs = parts[0].split(".", 1)
+            my_id, att_str = spli.split(",", 1)
+            att_str = att_str.strip()
+            my_id = my_id.strip('"')
+            if cmd_funcs == 'update':
+                att = eval(att_str)
+                if type(att) is dict:
+                    for keys, values in att.items():
+                        self.do_update(class_name + " " + my_id + " " + keys + " " + values)
+
 
         if cmd.endswith(".all()"):
             class_name = cmd.split(".")[0]
