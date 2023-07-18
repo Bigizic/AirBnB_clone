@@ -185,13 +185,13 @@ class Test_console(unittest.TestCase):
 
     # test if the do_show() raises a msg when a class that doesn't exist
     # is called along the show command
+
     def test_show_class_does_not_exist(self):
         console = HBNBCommand()
         expected = "** class doesn't exist **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(console.onecmd(f"show MyModel"))
             self.assertEqual(expected, output.getvalue().strip())
-
 
     # test if the do_show() raises a msg when a class that exist is only
     # passed as the argument but no id
