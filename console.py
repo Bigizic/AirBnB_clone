@@ -86,11 +86,14 @@ class HBNBCommand(cmd.Cmd):
 
                 if cmd_funcs == 'update' and not important:
                     args = class_id.split(",", 2)
-                    my_id = args[0].strip().strip('""')
-                    attr_name = args[1].strip().strip('""')
-                    attr_value = args[2].strip().strip('""')
-                    self.do_update(class_name + " " + my_id + " " +
-                                   attr_name + " " + attr_value)
+                    if len(args) == 3:
+                        my_id = args[0].strip().strip('""')
+                        attr_name = args[1].strip().strip('""')
+                        attr_value = args[2].strip().strip('""')
+                        self.do_update(class_name + " " + my_id + " " +
+                                       attr_name + " " + attr_value)
+                    else:
+                       print("** instance id missing **") 
             elif not class_name and  cmd_funcs:
                 print("** class name missing **")
             else:
