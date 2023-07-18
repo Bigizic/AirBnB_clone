@@ -26,7 +26,7 @@ from models.review import Review
 class FileStorage:
     """FileStorage implementation
     """
-    __file_path = None
+    __file_path = "file.json"
     __objects = {}
 
     def all(self):
@@ -47,7 +47,6 @@ class FileStorage:
     def save(self):
         """Serializes the __objects to the JSON file path
         """
-        self.__file_path = "file.json"
         with open(self.__file_path, "w") as open_file:
             data = {key: obj.to_dict() for key, obj in
                     self.__objects.items()}
