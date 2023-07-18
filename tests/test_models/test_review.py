@@ -62,6 +62,26 @@ class TestReviewsave_method(unittest.TestCase):
         self.assertGreater(new_updated_at, initial_updated_at)
 
 
+class TestReviewAttributes(unittest.TestCase):
+    """Checks if review public attributes are set to None
+    """
+
+    def test_attributes_are_none(self):
+        review = Review()
+        if review.place_id is None:
+            self.assertIsNone(review.place_id)
+        else:
+            self.assertIsNotNone(review.place_id)
+        if review.user_id is None:
+            self.assertIsNone(review.user_id)
+        else:
+            self.assertIsNotNone(review.user_id)
+        if review.text is None:
+            self.assertIsNone(review.text)
+        else:
+            self.assertIsNotNone(review.text)
+
+
 class TestReview_to_dict_method(unittest.TestCase):
     """Unittests for testing to_dict() for the class Review
     """
