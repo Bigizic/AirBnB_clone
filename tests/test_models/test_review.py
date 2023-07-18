@@ -12,9 +12,14 @@ from datetime import datetime
 import time
 from models.review import Review
 from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
 from unittest.mock import patch
 import json
 from models import storage
+from unittest.mock import patch, MagicMock
+from console import HBNBCommand
+from io import StringIO
 
 
 class TestReview_method(unittest.TestCase):
@@ -131,6 +136,44 @@ class TestReview_to_dict_method(unittest.TestCase):
         self.assertEqual(deserialized_review.place_id, self.review.place_id)
         self.assertEqual(deserialized_review.user_id, self.review.user_id)
         self.assertEqual(deserialized_review.text, self.review.text)
+
+
+class TestReview_update_method(unittest.TestCase):
+    """Lets update our review
+    """
+
+    def setUp(self):
+        user = User()
+        place = Place()
+        self.user_idf = user.id
+        self.place_idf = place.id
+
+        self.review = Review()
+        self.review.user_id = self.user_idf
+        self.review.place_id = self.place_idf
+        self.review.text = "Good resturant"
+
+    def test_confirm_review(self):
+        result = self.review.to_dict()
+        self.assertEqual(result['user_id'], self.user_idf)
+        self.assertEqual(result['place_id'], self.place_idf)
+        self.assertEqual(result['text'], self.review.text)
+
+    def test_update_review(self):
+        self.review.text = None
+        new_text = "Very good resturant"
+        self.review.text = new_text
+        result = self.review.to_dict()
+        self.assertEqual(result['text'], self.review.text)
+
+    def test_review_is_instance(self):
+        self.assertIsInstance(self.review, BaseModel)
+
+    def test_review_valid_inheritance_with_BaseModel(self):
+        review = self.review.to_dict()
+        self.assertIn('id', review)
+        self.assertIn('created_at', review)
+        self.assertIn('updated_at', review)
 
 
 if __name__ == '__main__':
