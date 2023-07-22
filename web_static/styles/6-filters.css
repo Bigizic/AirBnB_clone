@@ -2,6 +2,7 @@
 	height: 100%;
 	width: 25%;
 	display: inline-block;
+	justify-content: center;
 	margin-left: 5%;
 }
 
@@ -44,4 +45,39 @@
 
 .filters button:hover {
 	opacity: 0.9;
+}
+
+.popover {
+	list-style: none;
+	display: none;
+	background-color: #FAFAFA;
+	width: 112%;
+	border: 1px solid #DDDDDD;
+	border-radius: 4px;
+	padding: 10px;
+	position: relative;
+	right: 20%;
+	margin-top: 14%;
+	padding-bottom: 20px;
+}
+
+.locations:hover .popover {
+	display: block;
+}
+
+.locations .popover li {
+	margin: 0% 0% 0% 15%;
+}
+
+.popover h2 {
+	font-size: 16px;
+	margin: 5% 0% 2% 5%;
+}
+
+.amenities:hover .popover {
+	display: block;
+}
+
+.amenities .popover li {
+	margin: 2% 0% 0% 15%;
 }
