@@ -59,6 +59,7 @@
 	right: 20%;
 	margin-top: 14%;
 	padding-bottom: 20px;
+	z-index: 1;
 }
 
 .locations:hover .popover {
