@@ -52,7 +52,11 @@ article {
     border-top: 1px solid #DDDDDD;
     border-bottom: 1px solid #DDDDDD;
     display: flex;
-    margin-top: 10%;
+    margin-top: 12%;
+    position: absolute;
+    left: 5%;
+    box-sizing: border-box;
+    width: 40%;
 }
 
 
@@ -66,7 +70,8 @@ article {
 
 .max_guest h4 {
     position: absolute;
-    left: 6%;
+    left: 5%;
+    top: 45%;
 }
 
 .number_rooms {
@@ -79,7 +84,8 @@ article {
 
 .number_rooms h4 {
     position: absolute;
-    left: 20%;
+    left: 40%;
+    top: 45%;
 }
 
 .number_bathrooms {
@@ -92,7 +98,8 @@ article {
 
 .number_bathrooms h4 {
     position: absolute;
-    left: 34%;
+    left: 75%;
+    top: 45%;
 }
 
 .number_rooms, .number_bathrooms {
@@ -103,15 +110,19 @@ article {
     display: inline;
     position: absolute;
     bottom: 48%;
-    font-size: 16px;
+    font-size: 13px;
 }
 
 .user {
     position: absolute;
+    text-align: left;
+    left: 4%;
+    bottom: 36%;
+    font-size: 18px;
 }
 
 
-#big {
+.big {
     font-weight: 8;
     font-size: medium;
 }
@@ -146,14 +157,18 @@ article {
     border-top: 1px solid #DDDDDD;
     border-bottom: 1px solid #DDDDDD;
     display: flex;
-    margin-top: 10%;
+    margin-top: 12%;
+    position: absolute;
+    box-sizing: border-box;
+    left: 55%;
+    width: 40%;
 }
 
 .information2 h4 {
     display: inline;
     position: absolute;
     bottom: 48%;
-    font-size: 16px;
+    font-size: 13px;
 }
 /* End Tiny House Information */
 
@@ -168,7 +183,8 @@ article {
 
 .max_guest2 h4 {
     position: absolute;
-    left: 56%;
+    left: 5%;
+    top: 45%;
 }
 
 .number_rooms2 {
@@ -181,7 +197,8 @@ article {
 
 .number_rooms2 h4 {
     position: absolute;
-    left: 70%;
+    left: 40%;
+    top: 45%;
 }
 
 .number_bathrooms2 {
@@ -194,7 +211,8 @@ article {
 
 .number_bathrooms2 h4 {
     position: absolute;
-    left: 84%;
+    left: 75%;
+    top: 45%;
 }
 /* End of Tiny House icons and their details */
 
@@ -203,12 +221,20 @@ article {
     margin-left: 10%;
 }
 
+.user1 {
+    position: absolute;
+    left: 54%;
+    bottom: 35%;
+    font-size: 18px;
+}
+
 /*Tiny House Description */
 .description2 {
     text-align: left;
     position: absolute;
     font-size: medium;
     bottom: 13%;
+    left: 54%;
 }
 
 /* Beginning of Suite info */
@@ -220,8 +246,8 @@ article {
     height: 70px;
     font-size: 30px;
     position: absolute;
-    left: 78%;
-    bottom: 75%;
+    left: 61%;
+    top: 108%;
 }
 
 .price_by_night3 p {
@@ -235,13 +261,17 @@ article {
     border-bottom: 1px solid #DDDDDD;
     display: flex;
     margin-top: 15%;
+    position: absolute;
+    top: 96%;
+    width: 40%;
 }
 
 .information3 h4 {
     display: inline;
     position: absolute;
     bottom: 42%;
-    font-size: 16px;
+    font-size: 13px;
+    top: 50%;
 }
 /* End Suite Information */
 
@@ -256,7 +286,7 @@ article {
 
 .max_guest3 h4 {
     position: absolute;
-    left: 8%;
+    left: 6%;
 }
 
 .number_rooms3 {
@@ -282,7 +312,7 @@ article {
 
 .number_bathrooms3 h4 {
     position: absolute;
-    left: 70%;
+    left: 75%;
 }
 /* End of Suite icons and their details */
 
@@ -296,5 +326,13 @@ article {
     text-align: left;
     position: absolute;
     font-size: medium;
-    bottom: 3%;
+    top: 163%;
+    left: 30%;
+}
+
+.user3 {
+    position: absolute;
+    top: 155%;
+    left: 30%;
+    font-size: 18px;
 }
