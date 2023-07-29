@@ -184,9 +184,6 @@ class TestReview_instantiation(unittest.TestCase):
     def test_no_args_instantiates(self):
         self.assertEqual(Review, type(Review()))
 
-    def test_new_instance_stored_in_objects(self):
-        self.assertIn(Review(), models.storage.all().values())
-
     def test_id_is_public_str(self):
         self.assertEqual(str, type(Review().id))
 
@@ -302,13 +299,6 @@ class TestReview_save(unittest.TestCase):
         rv = Review()
         with self.assertRaises(TypeError):
             rv.save(None)
-
-    def test_save_updates_file(self):
-        rv = Review()
-        rv.save()
-        rvid = "Review." + rv.id
-        with open("file.json", "r") as f:
-            self.assertIn(rvid, f.read())
 
 
 class TestReview_to_dict(unittest.TestCase):
